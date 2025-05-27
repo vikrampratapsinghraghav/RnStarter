@@ -1,7 +1,20 @@
-export type RootStackParamList = {
+import { NavigatorScreenParams } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+
+export type TabParamList = {
   Home: undefined;
   Profile: undefined;
   Settings: undefined;
+};
+
+export type DrawerParamList = {
+  MainTabs: NavigatorScreenParams<TabParamList>;
+  ThemeSettings: undefined;
+  LanguageSettings: undefined;
+};
+
+export type RootStackParamList = {
+  Drawer: NavigatorScreenParams<DrawerParamList>;
 };
 
 export type RootDrawerParamList = {
@@ -31,4 +44,18 @@ export type ProfileStackParamList = {
   ProfileScreen: undefined;
   EditProfile: undefined;
   Preferences: undefined;
-}; 
+};
+
+export type BottomTabParamList = {
+  HomeTab: undefined;
+  ProfileTab: undefined;
+  SettingsTab: undefined;
+};
+
+export type SettingsStackNavigationProp = NativeStackNavigationProp<DrawerParamList>;
+
+declare global {
+  namespace ReactNavigation {
+    interface RootParamList extends RootStackParamList {}
+  }
+} 

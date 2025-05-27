@@ -1,30 +1,29 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {RootStackParamList} from '../navigation/types';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import { View, StyleSheet } from 'react-native';
+import { useTheme } from '../theme/ThemeContext';
+import { useTranslation } from '../localization/useTranslation';
+import { Text } from '../components/common';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'Profile'>;
+export const ProfileScreen = () => {
+  const { theme } = useTheme();
+  const { t } = useTranslation();
 
-const ProfileScreen = ({navigation}: Props) => {
   return (
-    <View style={styles.container}>
-      <Icon name="person" size={50} color="#f4511e" style={styles.headerIcon} />
-      <Text style={styles.title}>Profile Screen</Text>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate('Home')}>
-          <Icon name="home" size={24} color="#fff" />
-          <Text style={styles.buttonText}>Go to Home</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate('Settings')}>
-          <Icon name="settings" size={24} color="#fff" />
-          <Text style={styles.buttonText}>Go to Settings</Text>
-        </TouchableOpacity>
-      </View>
+    <View style={[styles.container, { backgroundColor: theme.background.default }]}>
+      <Text
+        variant="h2"
+        color={theme.text.primary}
+        style={styles.title}
+      >
+        {t('screens.profile.title')}
+      </Text>
+      <Text
+        variant="body1"
+        color={theme.text.secondary}
+        style={styles.subtitle}
+      >
+        {t('screens.profile.subtitle')}
+      </Text>
     </View>
   );
 };
@@ -32,37 +31,15 @@ const ProfileScreen = ({navigation}: Props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    padding: 16,
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  headerIcon: {
-    marginBottom: 10,
+    justifyContent: 'center',
   },
   title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    color: '#333',
+    marginBottom: 16,
+    textAlign: 'center',
   },
-  buttonContainer: {
-    gap: 15,
-    width: '80%',
+  subtitle: {
+    textAlign: 'center',
   },
-  button: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#f4511e',
-    padding: 15,
-    borderRadius: 10,
-    justifyContent: 'center',
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '600',
-    marginLeft: 10,
-  },
-});
-
-export default ProfileScreen; 
+}); 

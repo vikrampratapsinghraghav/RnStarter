@@ -6,21 +6,31 @@
  */
 import './gesture-handler';
 import React from 'react';
-import {StatusBar, useColorScheme} from 'react-native';
-import AppNavigator from './src/navigation/AppNavigator';
+import { NavigationContainer } from '@react-navigation/native';
+import { Provider } from 'react-redux';
+import { store } from './src/store';
+import { ThemeProvider } from './src/theme/ThemeContext';
+import { LanguageProvider } from './src/localization/LanguageContext';
+import { DrawerNavigator } from './src/navigation/DrawerNavigator';
+import { ErrorBoundary } from './src/components/common/ErrorBoundary';
 
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
+/**
+ * Root component that provides theme context and error boundary
+ */
+const App = () => {
   return (
-    <>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={isDarkMode ? '#000' : '#fff'}
-      />
-      <AppNavigator />
-    </>
+    <Provider store={store}>
+      <ErrorBoundary>
+        <LanguageProvider>
+          <ThemeProvider>
+            <NavigationContainer>
+              <DrawerNavigator />
+            </NavigationContainer>
+          </ThemeProvider>
+        </LanguageProvider>
+      </ErrorBoundary>
+    </Provider>
   );
-}
+};
 
 export default App;
