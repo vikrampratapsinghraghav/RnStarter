@@ -223,7 +223,7 @@ See the [LICENSE](LICENSE) file for more details.
 
 If this project saved you hours of setup time, consider supporting me:
 
-- ☕ [Buy Me a Coffee](https://www.buymeacoffee.com/vikramps98)
+- ☕ [Buy Me a Coffee](https://buymeacoffee.com/vikrampratap)
 - 💬 [Message me on LinkedIn](https://www.linkedin.com/in/vikramps98)
 - 📦 [Download the advanced version on Gumroad](https://gumroad.com/vikramps98)
 
