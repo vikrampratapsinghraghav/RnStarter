@@ -12,8 +12,8 @@ import { DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navi
 
 // Import screens
 import { TabNavigator } from './TabNavigator';
-import { ThemeSettingsScreen } from '@screens/ThemeSettingsScreen';
-import { LanguageSettingsScreen } from '@screens/LanguageSettingsScreen';
+import { ThemeSettingsScreen } from '@screens/settings/ThemeSettingsScreen';
+import { LanguageSettingsScreen } from '@screens/settings/LanguageSettingsScreen';
 
 const Drawer = createDrawerNavigator<DrawerParamList>();
 

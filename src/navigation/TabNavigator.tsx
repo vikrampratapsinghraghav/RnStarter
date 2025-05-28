@@ -10,7 +10,7 @@ import { TouchableOpacity, I18nManager, StyleSheet } from 'react-native';
 // Import screens
 import { HomeScreen } from '@screens/HomeScreen';
 import { ProfileScreen } from '@screens/ProfileScreen';
-import { SettingsScreen } from '@screens/SettingsScreen';
+import { SettingsScreen } from '@screens/settings/SettingsScreen';
 
 const Tab = createBottomTabNavigator<TabParamList>();
 
