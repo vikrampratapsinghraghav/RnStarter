@@ -8,7 +8,7 @@ import { Text, Button } from '@components/common';
 import { useTheme } from '@theme/ThemeContext';
 import { useTranslation } from '@localization/useTranslation';
 import { AuthStackParamList, LoginFormData, loginSchema } from '../types';
-import { FormInput } from '../components/FormInput';
+import { FormInput } from '@components/common/FormInput';
 import { useAuth } from '../context/AuthContext';
 
 type LoginScreenNavigationProp = NativeStackNavigationProp<AuthStackParamList, 'Login'>;
