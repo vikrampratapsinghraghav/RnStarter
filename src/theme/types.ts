@@ -76,4 +76,4 @@ export interface Theme {
     lg: number;
     xl: number;
   };
-} 
+}

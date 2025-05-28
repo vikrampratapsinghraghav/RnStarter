@@ -143,11 +143,11 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const loadThemePreference = useCallback(async () => {
     try {
       const savedPreference = await AsyncStorage.getItem(THEME_STORAGE_KEY);
-      
+
       if (savedPreference) {
         try {
           const preference: ThemePreference = JSON.parse(savedPreference);
-          
+
           // If the stored version doesn't match, fall back to system preference
           if (preference.version !== THEME_STORAGE_VERSION) {
             const systemPreferredTheme = systemColorScheme === 'dark' ? darkTheme : lightTheme;
@@ -155,7 +155,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
             await saveThemePreference(systemPreferredTheme.isDark);
             return;
           }
-          
+
           setTheme(preference.isDark ? darkTheme : lightTheme);
         } catch (parseError) {
           console.error('Failed to parse theme preference:', parseError);
@@ -186,15 +186,18 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }
   }, [systemColorScheme, loadThemePreference, isLoading]);
 
-  const setThemeMode = useCallback(async (isDark: boolean) => {
-    try {
-      const newTheme = isDark ? darkTheme : lightTheme;
-      setTheme(newTheme);
-      await saveThemePreference(isDark);
-    } catch (error) {
-      console.error('Failed to set theme mode:', error);
-    }
-  }, [saveThemePreference]);
+  const setThemeMode = useCallback(
+    async (isDark: boolean) => {
+      try {
+        const newTheme = isDark ? darkTheme : lightTheme;
+        setTheme(newTheme);
+        await saveThemePreference(isDark);
+      } catch (error) {
+        console.error('Failed to set theme mode:', error);
+      }
+    },
+    [saveThemePreference],
+  );
 
   const toggleTheme = useCallback(async () => {
     await setThemeMode(!theme.isDark);
@@ -213,4 +216,4 @@ export const useTheme = () => {
     throw new Error('useTheme must be used within a ThemeProvider');
   }
   return context;
-}; 
+};

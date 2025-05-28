@@ -1,11 +1,11 @@
 /**
  * Typography configuration for consistent text styling throughout the application.
  * Includes font families, sizes, and line heights with platform-specific adjustments.
- * 
+ *
  * @example
  * ```tsx
  * import { typography } from '../theme/typography';
- * 
+ *
  * const styles = StyleSheet.create({
  *   title: {
  *     fontFamily: typography.fontFamily.bold,
@@ -76,4 +76,4 @@ export const typography = {
 export type Typography = typeof typography;
 
 /** Type representing typography category keys */
-export type TypographyKeys = keyof typeof typography; 
+export type TypographyKeys = keyof typeof typography;

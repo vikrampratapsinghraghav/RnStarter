@@ -9,12 +9,8 @@ export const ThemeSettingsScreen = () => {
   const { t } = useTranslation();
 
   return (
-    <ScrollView
-      style={[styles.container, { backgroundColor: theme.background.default }]}
-    >
-      <Text style={[styles.title, { color: theme.text.primary }]}>
-        {t('theme.title')}
-      </Text>
+    <ScrollView style={[styles.container, { backgroundColor: theme.background.default }]}>
+      <Text style={[styles.title, { color: theme.text.primary }]}>{t('theme.title')}</Text>
       <Text style={[styles.description, { color: theme.text.secondary }]}>
         {t('settings.theme.description')}
       </Text>
@@ -41,9 +37,7 @@ export const ThemeSettingsScreen = () => {
           ].map((item, index) => (
             <View key={index} style={styles.colorItem}>
               <View style={[styles.colorBox, { backgroundColor: item.color }]} />
-              <Text style={[styles.colorName, { color: theme.text.primary }]}>
-                {item.name}
-              </Text>
+              <Text style={[styles.colorName, { color: theme.text.primary }]}>{item.name}</Text>
             </View>
           ))}
         </View>
@@ -101,4 +95,4 @@ const styles = StyleSheet.create({
     fontSize: 12,
     textAlign: 'center',
   },
-}); 
+});

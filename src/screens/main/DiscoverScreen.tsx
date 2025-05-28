@@ -57,7 +57,7 @@ const DiscoverScreen = () => {
           {CATEGORIES.map(category => (
             <TouchableOpacity
               key={category.id}
-              style={[styles.categoryCard, {backgroundColor: category.color}]}>
+              style={[styles.categoryCard, { backgroundColor: category.color }]}>
               <Icon name={category.icon} size={32} color="#fff" />
               <Text style={styles.categoryTitle}>{category.title}</Text>
             </TouchableOpacity>
@@ -70,7 +70,7 @@ const DiscoverScreen = () => {
         {TRENDING.map(item => (
           <TouchableOpacity key={item.id} style={styles.trendingCard}>
             <ImageBackground
-              source={{uri: item.image}}
+              source={{ uri: item.image }}
               style={styles.trendingImage}
               imageStyle={styles.trendingImageStyle}>
               <View style={styles.trendingContent}>
@@ -144,4 +144,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DiscoverScreen; 
+export default DiscoverScreen;

@@ -31,7 +31,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     // Get the device locale
     const locale = RNLocalize.getLocales()[0];
     const languageCode = locale?.languageCode || 'en';
-    
+
     // Check if the language is supported
     const isSupported = availableLanguages.some(lang => lang.code === languageCode);
     return isSupported ? languageCode : 'en';
@@ -53,7 +53,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     const loadLanguage = async () => {
       try {
         const savedLanguage = await AsyncStorage.getItem('@user_preferred_language');
-        
+
         if (savedLanguage) {
           const rtl = await setLanguageAndDirection(savedLanguage);
           setCurrentLanguage(savedLanguage);
@@ -77,7 +77,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     loadLanguage();
 
     // Subscribe to app state changes
-    const subscription = AppState.addEventListener('change', (nextAppState) => {
+    const subscription = AppState.addEventListener('change', nextAppState => {
       if (nextAppState === 'active') {
         handleLocaleChange();
       }
@@ -106,8 +106,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         isRTL,
         setLanguage,
         availableLanguages,
-      }}
-    >
+      }}>
       {children}
     </LanguageContext.Provider>
   );
@@ -119,4 +118,4 @@ export const useLanguage = () => {
     throw new Error('useLanguage must be used within a LanguageProvider');
   }
   return context;
-}; 
+};

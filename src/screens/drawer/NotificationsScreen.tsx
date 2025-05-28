@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, StyleSheet, FlatList} from 'react-native';
+import { View, Text, StyleSheet, FlatList } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const MOCK_NOTIFICATIONS = [
@@ -27,7 +27,7 @@ const MOCK_NOTIFICATIONS = [
 ];
 
 const NotificationsScreen = () => {
-  const renderNotification = ({item}: any) => (
+  const renderNotification = ({ item }: any) => (
     <View style={styles.notificationItem}>
       <Icon name={item.icon} size={24} color="#f4511e" style={styles.icon} />
       <View style={styles.notificationContent}>
@@ -96,4 +96,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default NotificationsScreen; 
+export default NotificationsScreen;

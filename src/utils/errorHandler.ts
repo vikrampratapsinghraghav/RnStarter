@@ -60,7 +60,7 @@ const getDeviceInfo = () => {
  */
 export const createErrorDetails = (
   error: Error | AppError,
-  context?: Record<string, any>
+  context?: Record<string, any>,
 ): ErrorDetails => {
   return {
     code: (error as AppError).code,
@@ -150,7 +150,7 @@ export const handleApiError = (error: any): { message: string; code?: string } =
  */
 export const tryCatch = async <T>(
   fn: () => Promise<T>,
-  errorHandler?: (error: any) => Promise<T>
+  errorHandler?: (error: any) => Promise<T>,
 ): Promise<T> => {
   try {
     return await fn();
@@ -167,17 +167,14 @@ export const tryCatch = async <T>(
  * @param error The error object
  * @param context Additional context information
  */
-export const logError = (
-  error: Error | AppError,
-  context?: Record<string, any>
-): void => {
+export const logError = (error: Error | AppError, context?: Record<string, any>): void => {
   const errorDetails = createErrorDetails(error, context);
-  
+
   // Log to console in development
   if (__DEV__) {
     console.error('Error:', errorDetails);
   }
-  
+
   // TODO: Add integration with error logging service (e.g., Sentry)
   // sendToErrorLoggingService(errorDetails);
-}; 
+};

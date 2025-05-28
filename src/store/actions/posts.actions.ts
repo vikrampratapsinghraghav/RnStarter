@@ -22,16 +22,13 @@ export const setPage = createAction<number>(POST_ACTIONS.SET_PAGE);
 export const setItemsPerPage = createAction<number>(POST_ACTIONS.SET_ITEMS_PER_PAGE);
 
 // Async Thunks
-export const fetchPosts = createAsyncThunk(
-  'posts/fetchPosts',
-  async (_, { rejectWithValue }) => {
-    try {
-      return await postsApi.getAllPosts();
-    } catch (error) {
-      return rejectWithValue(error instanceof Error ? error.message : 'Failed to fetch posts');
-    }
+export const fetchPosts = createAsyncThunk('posts/fetchPosts', async (_, { rejectWithValue }) => {
+  try {
+    return await postsApi.getAllPosts();
+  } catch (error) {
+    return rejectWithValue(error instanceof Error ? error.message : 'Failed to fetch posts');
   }
-);
+});
 
 export const createPost = createAsyncThunk(
   'posts/createPost',
@@ -41,7 +38,7 @@ export const createPost = createAsyncThunk(
     } catch (error) {
       return rejectWithValue(error instanceof Error ? error.message : 'Failed to create post');
     }
-  }
+  },
 );
 
 export const updatePost = createAsyncThunk(
@@ -52,7 +49,7 @@ export const updatePost = createAsyncThunk(
     } catch (error) {
       return rejectWithValue(error instanceof Error ? error.message : 'Failed to update post');
     }
-  }
+  },
 );
 
 export const deletePost = createAsyncThunk(
@@ -64,7 +61,7 @@ export const deletePost = createAsyncThunk(
     } catch (error) {
       return rejectWithValue(error instanceof Error ? error.message : 'Failed to delete post');
     }
-  }
+  },
 );
 
 export const fetchPaginatedPosts = createAsyncThunk(
@@ -79,5 +76,5 @@ export const fetchPaginatedPosts = createAsyncThunk(
     } catch (error) {
       return rejectWithValue(error instanceof Error ? error.message : 'Failed to fetch posts');
     }
-  }
-); 
+  },
+);

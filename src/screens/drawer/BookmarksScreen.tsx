@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const MOCK_BOOKMARKS = [
@@ -42,7 +42,7 @@ const MOCK_BOOKMARKS = [
 ];
 
 const BookmarksScreen = () => {
-  const renderBookmark = ({item}: any) => (
+  const renderBookmark = ({ item }: any) => (
     <TouchableOpacity style={styles.bookmarkItem}>
       <View style={styles.iconContainer}>
         <Icon name={item.icon} size={32} color="#fff" />
@@ -116,4 +116,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BookmarksScreen; 
+export default BookmarksScreen;

@@ -1,52 +1,43 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  ActivityIndicator,
-  I18nManager,
-} from 'react-native';
+import { View, Text, StyleSheet, ScrollView, ActivityIndicator, I18nManager } from 'react-native';
 import { useTheme } from '../theme/ThemeContext';
 import { useTranslation } from '../localization/useTranslation';
 import { Button } from '../components';
 
-const ColorBox = ({ color, name, textColor }: { 
-  color: string; 
+const ColorBox = ({
+  color,
+  name,
+  textColor,
+}: {
+  color: string;
   name: string;
   textColor: string;
 }) => {
   const { isRTL } = useTranslation();
-  
+
   return (
     <View style={[styles.colorBoxContainer, isRTL && styles.rtl]}>
       <View style={[styles.colorBox, { backgroundColor: color }]} />
-      <Text style={[styles.colorName, { color: textColor }]}>
-        {name}
-      </Text>
-      <Text style={[styles.colorValue, { color: textColor }]}>
-        {color}
-      </Text>
+      <Text style={[styles.colorName, { color: textColor }]}>{name}</Text>
+      <Text style={[styles.colorValue, { color: textColor }]}>{color}</Text>
     </View>
   );
 };
 
-const Section = ({ 
-  title, 
+const Section = ({
+  title,
   children,
-  textColor 
-}: { 
-  title: string; 
+  textColor,
+}: {
+  title: string;
   children: React.ReactNode;
   textColor: string;
 }) => {
   const { isRTL } = useTranslation();
-  
+
   return (
     <View style={[styles.section, isRTL && styles.rtl]}>
-      <Text style={[styles.sectionTitle, { color: textColor }]}>
-        {title}
-      </Text>
+      <Text style={[styles.sectionTitle, { color: textColor }]}>{title}</Text>
       {children}
     </View>
   );
@@ -70,14 +61,9 @@ export const ThemeDemo = () => {
         styles.container,
         { backgroundColor: theme.background.default },
         isRTL && styles.rtl,
-      ]}
-    >
+      ]}>
       <View style={[styles.header, isRTL && styles.rtl]}>
-        <Text
-          style={[styles.title, { color: theme.text.primary }]}
-        >
-          {t('theme.title')}
-        </Text>
+        <Text style={[styles.title, { color: theme.text.primary }]}>{t('theme.title')}</Text>
         <View style={styles.headerButtons}>
           <Button
             title={theme.isDark ? t('theme.light') : t('theme.dark')}
@@ -94,28 +80,28 @@ export const ThemeDemo = () => {
 
       <Section title={t('theme.colors')} textColor={theme.text.primary}>
         <View style={styles.colorGrid}>
-          <ColorBox 
-            color={theme.primary.main} 
+          <ColorBox
+            color={theme.primary.main}
             name={t('theme.colors.primary')}
             textColor={theme.text.primary}
           />
-          <ColorBox 
-            color={theme.secondary.main} 
+          <ColorBox
+            color={theme.secondary.main}
             name={t('theme.colors.secondary')}
             textColor={theme.text.primary}
           />
-          <ColorBox 
-            color={theme.error.main} 
+          <ColorBox
+            color={theme.error.main}
             name={t('theme.colors.error')}
             textColor={theme.text.primary}
           />
-          <ColorBox 
-            color={theme.success.main} 
+          <ColorBox
+            color={theme.success.main}
             name={t('theme.colors.success')}
             textColor={theme.text.primary}
           />
-          <ColorBox 
-            color={theme.warning.main} 
+          <ColorBox
+            color={theme.warning.main}
             name={t('theme.colors.warning')}
             textColor={theme.text.primary}
           />
@@ -147,22 +133,12 @@ export const ThemeDemo = () => {
       </Section>
 
       <Section title={t('theme.surfaces')} textColor={theme.text.primary}>
-        <View
-          style={[
-            styles.surface,
-            { backgroundColor: theme.background.paper },
-          ]}
-        >
+        <View style={[styles.surface, { backgroundColor: theme.background.paper }]}>
           <Text style={[styles.md, { color: theme.text.primary }]}>
             {t('theme.surfaces.paper')}
           </Text>
         </View>
-        <View
-          style={[
-            styles.surface,
-            { backgroundColor: theme.background.elevated },
-          ]}
-        >
+        <View style={[styles.surface, { backgroundColor: theme.background.elevated }]}>
           <Text style={[styles.md, { color: theme.text.primary }]}>
             {t('theme.surfaces.elevated')}
           </Text>
@@ -262,4 +238,4 @@ const styles = StyleSheet.create({
   rtl: {
     transform: [{ scaleX: I18nManager.isRTL ? -1 : 1 }],
   },
-}); 
+});

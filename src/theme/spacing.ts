@@ -1,11 +1,11 @@
 /**
  * Spacing configuration for consistent layout throughout the application.
  * All spacing values are in pixels and follow a geometric progression.
- * 
+ *
  * @example
  * ```tsx
  * import { spacing, layout } from '../theme/spacing';
- * 
+ *
  * const styles = StyleSheet.create({
  *   container: {
  *     padding: spacing.md,
@@ -54,4 +54,4 @@ export const layout = {
     /** Extra large border radius (16px) - Used for floating elements */
     xl: 16,
   },
-} as const; 
+} as const;

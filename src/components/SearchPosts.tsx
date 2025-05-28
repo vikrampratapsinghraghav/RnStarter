@@ -21,18 +21,21 @@ export const SearchPosts = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
-  const { data: posts, loading, error } = useApi<Post[]>(
-    () => searchPosts(debouncedSearchTerm),
-    {
-      enabled: debouncedSearchTerm.length > 0,
-      cacheKey: `posts-${debouncedSearchTerm}`,
-    }
-  );
+  const {
+    data: posts,
+    loading,
+    error,
+  } = useApi<Post[]>(() => searchPosts(debouncedSearchTerm), {
+    enabled: debouncedSearchTerm.length > 0,
+    cacheKey: `posts-${debouncedSearchTerm}`,
+  });
 
   const renderPost = ({ item }: { item: Post }) => (
     <View style={styles.postContainer}>
       <Text style={styles.title}>{item.title}</Text>
-      <Text numberOfLines={2} style={styles.body}>{item.body}</Text>
+      <Text numberOfLines={2} style={styles.body}>
+        {item.body}
+      </Text>
     </View>
   );
 
@@ -62,7 +65,7 @@ export const SearchPosts = () => {
         <FlatList
           data={posts}
           renderItem={renderPost}
-          keyExtractor={(item) => item.id.toString()}
+          keyExtractor={item => item.id.toString()}
           contentContainerStyle={styles.listContainer}
         />
       )}
@@ -113,4 +116,4 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#666',
   },
-}); 
+});

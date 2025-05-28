@@ -1,3 +1,3 @@
 export * from './config';
 export * from './types';
-export { postsApi } from './endpoints/posts'; 
+export { postsApi } from './endpoints/posts';

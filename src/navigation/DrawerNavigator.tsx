@@ -27,8 +27,7 @@ export const DrawerNavigator = () => {
         },
         drawerActiveTintColor: theme.primary.main,
         drawerInactiveTintColor: theme.text.disabled,
-      }}
-    >
+      }}>
       <Drawer.Screen
         name="MainTabs"
         component={TabNavigator}
@@ -53,4 +52,4 @@ export const DrawerNavigator = () => {
       />
     </Drawer.Navigator>
   );
-}; 
+};

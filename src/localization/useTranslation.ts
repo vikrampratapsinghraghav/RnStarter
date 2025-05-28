@@ -13,4 +13,4 @@ export const useTranslation = () => {
     setLanguage,
     availableLanguages,
   };
-}; 
+};

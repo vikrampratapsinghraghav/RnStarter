@@ -32,14 +32,18 @@ export const LanguageSettingsScreen = () => {
             },
           },
         ],
-        { cancelable: true }
+        { cancelable: true },
       );
     } else {
       await setLanguage(code);
     }
   };
 
-  const LanguageItem = ({ code, name, isSelected }: {
+  const LanguageItem = ({
+    code,
+    name,
+    isSelected,
+  }: {
     code: string;
     name: string;
     isSelected: boolean;
@@ -50,18 +54,13 @@ export const LanguageSettingsScreen = () => {
         { backgroundColor: theme.background.paper },
         isSelected && { borderColor: theme.primary.main },
       ]}
-      onPress={() => handleLanguageChange(code)}
-    >
+      onPress={() => handleLanguageChange(code)}>
       <Icon
         name={isSelected ? 'check-circle' : 'circle-outline'}
         size={24}
         color={isSelected ? theme.primary.main : theme.text.disabled}
       />
-      <Text
-        variant="body1"
-        style={styles.languageName}
-        color={theme.text.primary}
-      >
+      <Text variant="body1" style={styles.languageName} color={theme.text.primary}>
         {name}
       </Text>
     </TouchableOpacity>
@@ -69,15 +68,11 @@ export const LanguageSettingsScreen = () => {
 
   return (
     <View style={[styles.container, { backgroundColor: theme.background.default }]}>
-      <Text
-        variant="h3"
-        style={styles.title}
-        color={theme.text.primary}
-      >
+      <Text variant="h3" style={styles.title} color={theme.text.primary}>
         {t('settings.language.title')}
       </Text>
       <View style={styles.languageList}>
-        {availableLanguages.map((lang) => (
+        {availableLanguages.map(lang => (
           <LanguageItem
             key={lang.code}
             code={lang.code}
@@ -113,4 +108,4 @@ const styles = StyleSheet.create({
     marginLeft: 16,
     marginRight: 16,
   },
-}); 
+});

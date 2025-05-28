@@ -23,16 +23,12 @@ interface UseApiOptions {
 
 export function useApi<T>(
   apiFunction: () => Promise<T>,
-  options: UseApiOptions = {}
+  options: UseApiOptions = {},
 ): ApiState<T> & {
   refetch: () => Promise<void>;
   clearCache: () => void;
 } {
-  const {
-    cacheKey,
-    cacheDuration = CACHE_DURATION,
-    enabled = true
-  } = options;
+  const { cacheKey, cacheDuration = CACHE_DURATION, enabled = true } = options;
 
   const [state, setState] = useState<ApiState<T>>({
     data: null,
@@ -64,7 +60,7 @@ export function useApi<T>(
 
     try {
       const result = await apiFunction();
-      
+
       // Update cache
       if (cacheKey) {
         cache.set(cacheKey, {
@@ -81,7 +77,7 @@ export function useApi<T>(
     } catch (error) {
       const errorDetails = handleApiError(error);
       logError(error instanceof AppError ? error : new Error(errorDetails.message));
-      
+
       setState({
         data: null,
         loading: false,
@@ -101,4 +97,4 @@ export function useApi<T>(
     refetch: fetchData,
     clearCache,
   };
-} 
+}

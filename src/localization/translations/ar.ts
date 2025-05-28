@@ -77,4 +77,4 @@ export default {
       description: 'اختر السمة المفضلة لديك',
     },
   },
-}; 
+};

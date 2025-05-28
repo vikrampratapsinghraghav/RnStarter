@@ -20,7 +20,7 @@ export const isValidPassword = (
     requireSpecialChars?: boolean;
     requireUppercase?: boolean;
     requireLowercase?: boolean;
-  } = {}
+  } = {},
 ): { isValid: boolean; errors: string[] } => {
   const {
     minLength = 8,
@@ -63,10 +63,7 @@ export const isValidPassword = (
  * @param phone The phone number to validate
  * @param countryCode The country code to validate against (default: 'US')
  */
-export const isValidPhoneNumber = (
-  phone: string,
-  countryCode: string = 'US'
-): boolean => {
+export const isValidPhoneNumber = (phone: string, countryCode: string = 'US'): boolean => {
   const phoneRegexMap: { [key: string]: RegExp } = {
     US: /^\+?1?\s*\(?([0-9]{3})\)?[-.\s]?([0-9]{3})[-.\s]?([0-9]{4})$/,
     UK: /^\+?44\s?7\d{3}?\s?\d{3}?\s?\d{3}$/,
@@ -131,20 +128,16 @@ export const isValidCreditCard = (cardNumber: string): boolean => {
  * @param minDate The minimum allowed date
  * @param maxDate The maximum allowed date
  */
-export const isDateInRange = (
-  date: Date,
-  minDate?: Date,
-  maxDate?: Date
-): boolean => {
+export const isDateInRange = (date: Date, minDate?: Date, maxDate?: Date): boolean => {
   const timestamp = date.getTime();
-  
+
   if (minDate && timestamp < minDate.getTime()) {
     return false;
   }
-  
+
   if (maxDate && timestamp > maxDate.getTime()) {
     return false;
   }
-  
+
   return true;
-}; 
+};

@@ -39,10 +39,8 @@ export const Text: React.FC<TextProps> = ({
   ...props
 }) => {
   const { theme } = useTheme();
-  
-  const textAlign = align === 'auto' 
-    ? I18nManager.isRTL ? 'right' : 'left'
-    : align;
+
+  const textAlign = align === 'auto' ? (I18nManager.isRTL ? 'right' : 'left') : align;
 
   return (
     <RNText
@@ -55,8 +53,7 @@ export const Text: React.FC<TextProps> = ({
         },
         style,
       ]}
-      {...props}
-    >
+      {...props}>
       {children}
     </RNText>
   );
@@ -100,4 +97,4 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     lineHeight: 24,
   },
-}); 
+});

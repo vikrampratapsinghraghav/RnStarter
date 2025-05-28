@@ -10,18 +10,10 @@ export const ProfileScreen = () => {
 
   return (
     <View style={[styles.container, { backgroundColor: theme.background.default }]}>
-      <Text
-        variant="h2"
-        color={theme.text.primary}
-        style={styles.title}
-      >
+      <Text variant="h2" color={theme.text.primary} style={styles.title}>
         {t('screens.profile.title')}
       </Text>
-      <Text
-        variant="body1"
-        color={theme.text.secondary}
-        style={styles.subtitle}
-      >
+      <Text variant="body1" color={theme.text.secondary} style={styles.subtitle}>
         {t('screens.profile.subtitle')}
       </Text>
     </View>
@@ -42,4 +34,4 @@ const styles = StyleSheet.create({
   subtitle: {
     textAlign: 'center',
   },
-}); 
+});

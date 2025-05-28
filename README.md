@@ -197,17 +197,40 @@ The app includes a centralized API setup:
 3. Endpoints organized in `src/api/endpoints/`
 4. Integration with Redux using async thunks
 
-## 📝 Contributing
+## 🔁 Contributing
 
-[Contribution guidelines...]
+Contributions are welcome! If you'd like to improve this template, feel free to:
+
+- ⭐ Star the repository to support the project
+- 🐛 Open an issue for bugs or suggestions
+- 📥 Submit a pull request with enhancements or fixes
+
+### Before contributing, please make sure to:
+
+1. Follow the existing code style (Prettier + ESLint)
+2. Write clear commit messages
+3. Test your changes on both Android and iOS
+
+Thank you for helping make this starter better!
 
 ## 📄 License
 
-[License information...]
+This project is licensed under the MIT License — you're free to use, modify, and distribute it with attribution.
+
+See the [LICENSE](LICENSE) file for more details.
 
 ## 🤝 Support
 
-[Support information...]
+If this project saved you hours of setup time, consider supporting me:
+
+- ☕ [Buy Me a Coffee](https://www.buymeacoffee.com/yourusername)
+- 💬 [Message me on LinkedIn](https://www.linkedin.com/in/yourusername)
+- 📦 [Download the advanced version on Gumroad](https://gumroad.com/yourusername)
+
+Need customizations or features? Open an issue or contact me directly.
+
+---
+Made with ❤️ by [Your Name/Organization]
 
 ## 💅 Code Quality Tools
 

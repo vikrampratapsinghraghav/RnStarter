@@ -70,11 +70,12 @@ export default {
       english: 'English',
       arabic: 'العربية',
       restartTitle: 'Restart Required',
-      restartMessage: 'The app needs to restart to change the layout direction. Do you want to continue?',
+      restartMessage:
+        'The app needs to restart to change the layout direction. Do you want to continue?',
     },
     theme: {
       title: 'Theme',
       description: 'Choose your preferred theme',
     },
   },
-}; 
+};

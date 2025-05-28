@@ -22,8 +22,7 @@ export const TabNavigator = () => {
   const DrawerButton = () => (
     <TouchableOpacity
       onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
-      style={{ marginLeft: 16 }}
-    >
+      style={{ marginLeft: 16 }}>
       <Icon name="menu" size={24} color={theme.text.primary} />
     </TouchableOpacity>
   );
@@ -42,15 +41,12 @@ export const TabNavigator = () => {
         },
         headerTintColor: theme.text.primary,
         headerLeft: () => <DrawerButton />,
-      }}
-    >
+      }}>
       <Tab.Screen
         name="Home"
         component={HomeScreen}
         options={{
-          tabBarIcon: ({ color, size }) => (
-            <Icon name="home" size={size} color={color} />
-          ),
+          tabBarIcon: ({ color, size }) => <Icon name="home" size={size} color={color} />,
           title: t('navigation.home'),
         }}
       />
@@ -58,9 +54,7 @@ export const TabNavigator = () => {
         name="Profile"
         component={ProfileScreen}
         options={{
-          tabBarIcon: ({ color, size }) => (
-            <Icon name="account" size={size} color={color} />
-          ),
+          tabBarIcon: ({ color, size }) => <Icon name="account" size={size} color={color} />,
           title: t('navigation.profile'),
         }}
       />
@@ -68,12 +62,10 @@ export const TabNavigator = () => {
         name="Settings"
         component={SettingsScreen}
         options={{
-          tabBarIcon: ({ color, size }) => (
-            <Icon name="cog" size={size} color={color} />
-          ),
+          tabBarIcon: ({ color, size }) => <Icon name="cog" size={size} color={color} />,
           title: t('navigation.settings'),
         }}
       />
     </Tab.Navigator>
   );
-}; 
+};

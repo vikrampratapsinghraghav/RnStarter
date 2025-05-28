@@ -12,21 +12,20 @@ export const SettingsScreen = () => {
   const { t } = useTranslation();
   const navigation = useNavigation<SettingsStackNavigationProp>();
 
-  const SettingsItem = ({ icon, title, onPress }: {
+  const SettingsItem = ({
+    icon,
+    title,
+    onPress,
+  }: {
     icon: string;
     title: string;
     onPress: () => void;
   }) => (
     <TouchableOpacity
       style={[styles.settingsItem, { backgroundColor: theme.background.paper }]}
-      onPress={onPress}
-    >
+      onPress={onPress}>
       <Icon name={icon} size={24} color={theme.text.primary} />
-      <Text
-        variant="body1"
-        color={theme.text.primary}
-        style={styles.settingsItemText}
-      >
+      <Text variant="body1" color={theme.text.primary} style={styles.settingsItemText}>
         {title}
       </Text>
       <Icon name="chevron-right" size={24} color={theme.text.disabled} />
@@ -35,11 +34,7 @@ export const SettingsScreen = () => {
 
   return (
     <View style={[styles.container, { backgroundColor: theme.background.default }]}>
-      <Text
-        variant="h3"
-        color={theme.text.primary}
-        style={styles.title}
-      >
+      <Text variant="h3" color={theme.text.primary} style={styles.title}>
         {t('screens.settings.title')}
       </Text>
       <View style={styles.settingsList}>
@@ -79,4 +74,4 @@ const styles = StyleSheet.create({
     flex: 1,
     marginHorizontal: 16,
   },
-}); 
+});

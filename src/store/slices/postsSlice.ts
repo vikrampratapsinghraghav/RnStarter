@@ -33,16 +33,13 @@ const initialState: PostsState = {
   },
 };
 
-export const fetchPosts = createAsyncThunk(
-  'posts/fetchPosts',
-  async (_, { rejectWithValue }) => {
-    try {
-      return await postsApi.getAllPosts();
-    } catch (error) {
-      return rejectWithValue(error instanceof Error ? error.message : 'Failed to fetch posts');
-    }
+export const fetchPosts = createAsyncThunk('posts/fetchPosts', async (_, { rejectWithValue }) => {
+  try {
+    return await postsApi.getAllPosts();
+  } catch (error) {
+    return rejectWithValue(error instanceof Error ? error.message : 'Failed to fetch posts');
   }
-);
+});
 
 export const createPost = createAsyncThunk(
   'posts/createPost',
@@ -52,7 +49,7 @@ export const createPost = createAsyncThunk(
     } catch (error) {
       return rejectWithValue(error instanceof Error ? error.message : 'Failed to create post');
     }
-  }
+  },
 );
 
 export const updatePost = createAsyncThunk(
@@ -63,7 +60,7 @@ export const updatePost = createAsyncThunk(
     } catch (error) {
       return rejectWithValue(error instanceof Error ? error.message : 'Failed to update post');
     }
-  }
+  },
 );
 
 export const deletePost = createAsyncThunk(
@@ -75,7 +72,7 @@ export const deletePost = createAsyncThunk(
     } catch (error) {
       return rejectWithValue(error instanceof Error ? error.message : 'Failed to delete post');
     }
-  }
+  },
 );
 
 // New async thunk for paginated fetch
@@ -91,7 +88,7 @@ export const fetchPaginatedPosts = createAsyncThunk(
     } catch (error) {
       return rejectWithValue(error instanceof Error ? error.message : 'Failed to fetch posts');
     }
-  }
+  },
 );
 
 const postsSlice = createSlice({
@@ -124,10 +121,10 @@ const postsSlice = createSlice({
       state.pagination.currentPage = 1; // Reset to first page when changing items per page
     },
   },
-  extraReducers: (builder) => {
+  extraReducers: builder => {
     builder
       // Fetch posts
-      .addCase(fetchPosts.pending, (state) => {
+      .addCase(fetchPosts.pending, state => {
         state.loading = true;
         state.error = null;
       })
@@ -137,7 +134,7 @@ const postsSlice = createSlice({
       })
       .addCase(fetchPosts.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload as string || 'Something went wrong';
+        state.error = (action.payload as string) || 'Something went wrong';
       })
       // Create post
       .addCase(createPost.fulfilled, (state, action: PayloadAction<Post>) => {
@@ -155,47 +152,45 @@ const postsSlice = createSlice({
         state.items = state.items.filter(post => post.id !== action.payload);
       })
       // Paginated fetch cases
-      .addCase(fetchPaginatedPosts.pending, (state) => {
+      .addCase(fetchPaginatedPosts.pending, state => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchPaginatedPosts.fulfilled, (state, action: PayloadAction<{ posts: Post[]; total: number }>) => {
-        state.loading = false;
-        state.items = action.payload.posts;
-        state.pagination.totalItems = action.payload.total;
-      })
+      .addCase(
+        fetchPaginatedPosts.fulfilled,
+        (state, action: PayloadAction<{ posts: Post[]; total: number }>) => {
+          state.loading = false;
+          state.items = action.payload.posts;
+          state.pagination.totalItems = action.payload.total;
+        },
+      )
       .addCase(fetchPaginatedPosts.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload as string || 'Something went wrong';
+        state.error = (action.payload as string) || 'Something went wrong';
       });
   },
 });
 
-export const {
-  setFilter,
-  setSortBy,
-  setSortOrder,
-  toggleFavorite,
-  setPage,
-  setItemsPerPage,
-} = postsSlice.actions;
+export const { setFilter, setSortBy, setSortOrder, toggleFavorite, setPage, setItemsPerPage } =
+  postsSlice.actions;
 
 // Selectors
 export const selectFilteredAndSortedPosts = (state: { posts: PostsState }) => {
   const { items, filter, sortBy, sortOrder } = state.posts;
-  
+
   let filteredPosts = items;
   if (filter) {
-    filteredPosts = items.filter(post => 
-      post.title.toLowerCase().includes(filter.toLowerCase()) ||
-      post.body.toLowerCase().includes(filter.toLowerCase())
+    filteredPosts = items.filter(
+      post =>
+        post.title.toLowerCase().includes(filter.toLowerCase()) ||
+        post.body.toLowerCase().includes(filter.toLowerCase()),
     );
   }
-  
+
   return [...filteredPosts].sort((a, b) => {
     const aValue = a[sortBy];
     const bValue = b[sortBy];
-    
+
     if (sortOrder === 'asc') {
       return aValue > bValue ? 1 : -1;
     } else {
@@ -204,9 +199,9 @@ export const selectFilteredAndSortedPosts = (state: { posts: PostsState }) => {
   });
 };
 
-export const selectFavoriteStatus = (postId: number) => (state: { posts: PostsState }) => 
+export const selectFavoriteStatus = (postId: number) => (state: { posts: PostsState }) =>
   state.posts.favorites.includes(postId);
 
 export const selectPaginationInfo = (state: { posts: PostsState }) => state.posts.pagination;
 
-export default postsSlice.reducer; 
+export default postsSlice.reducer;

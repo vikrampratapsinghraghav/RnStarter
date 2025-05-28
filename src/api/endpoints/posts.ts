@@ -51,4 +51,4 @@ export const postsApi = {
     });
     return handleApiResponse<void>(response);
   },
-}; 
+};

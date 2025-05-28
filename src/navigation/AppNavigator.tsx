@@ -1,7 +1,7 @@
 import React from 'react';
-import {NavigationContainer} from '@react-navigation/native';
-import {createDrawerNavigator} from '@react-navigation/drawer';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { NavigationContainer } from '@react-navigation/native';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 // Import screens
@@ -12,7 +12,7 @@ import NotificationsScreen from '../screens/drawer/NotificationsScreen';
 import BookmarksScreen from '../screens/drawer/BookmarksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 
-import {RootDrawerParamList, MainTabParamList} from './types';
+import { RootDrawerParamList, MainTabParamList } from './types';
 
 const Drawer = createDrawerNavigator<RootDrawerParamList>();
 const Tab = createBottomTabNavigator<MainTabParamList>();
@@ -20,8 +20,8 @@ const Tab = createBottomTabNavigator<MainTabParamList>();
 const MainTabs = () => {
   return (
     <Tab.Navigator
-      screenOptions={({route}) => ({
-        tabBarIcon: ({focused, color, size}) => {
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
           let iconName;
           switch (route.name) {
             case 'Home':
@@ -108,16 +108,14 @@ const AppNavigator = () => {
           component={MainTabs}
           options={{
             title: 'Home',
-            drawerIcon: ({color, size}) => (
-              <Icon name="home" size={size} color={color} />
-            ),
+            drawerIcon: ({ color, size }) => <Icon name="home" size={size} color={color} />,
           }}
         />
         <Drawer.Screen
           name="Notifications"
           component={NotificationsScreen}
           options={{
-            drawerIcon: ({color, size}) => (
+            drawerIcon: ({ color, size }) => (
               <Icon name="notifications" size={size} color={color} />
             ),
           }}
@@ -126,18 +124,14 @@ const AppNavigator = () => {
           name="Bookmarks"
           component={BookmarksScreen}
           options={{
-            drawerIcon: ({color, size}) => (
-              <Icon name="bookmarks" size={size} color={color} />
-            ),
+            drawerIcon: ({ color, size }) => <Icon name="bookmarks" size={size} color={color} />,
           }}
         />
         <Drawer.Screen
           name="Settings"
           component={SettingsScreen}
           options={{
-            drawerIcon: ({color, size}) => (
-              <Icon name="settings" size={size} color={color} />
-            ),
+            drawerIcon: ({ color, size }) => <Icon name="settings" size={size} color={color} />,
           }}
         />
       </Drawer.Navigator>
@@ -145,4 +139,4 @@ const AppNavigator = () => {
   );
 };
 
-export default AppNavigator; 
+export default AppNavigator;

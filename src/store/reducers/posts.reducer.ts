@@ -84,7 +84,7 @@ export const postsReducer = createReducer(initialState, builder => {
     })
     .addCase(fetchPosts.rejected, (state, action) => {
       state.loading = false;
-      state.error = action.payload as string || 'Something went wrong';
+      state.error = (action.payload as string) || 'Something went wrong';
     })
     .addCase(createPost.fulfilled, (state, action) => {
       state.items.unshift(action.payload);
@@ -109,26 +109,27 @@ export const postsReducer = createReducer(initialState, builder => {
     })
     .addCase(fetchPaginatedPosts.rejected, (state, action) => {
       state.loading = false;
-      state.error = action.payload as string || 'Something went wrong';
+      state.error = (action.payload as string) || 'Something went wrong';
     });
 });
 
 // Selectors
 export const selectFilteredAndSortedPosts = (state: { posts: PostsState }) => {
   const { items, filter, sortBy, sortOrder } = state.posts;
-  
+
   let filteredPosts = items;
   if (filter) {
-    filteredPosts = items.filter(post => 
-      post.title.toLowerCase().includes(filter.toLowerCase()) ||
-      post.body.toLowerCase().includes(filter.toLowerCase())
+    filteredPosts = items.filter(
+      post =>
+        post.title.toLowerCase().includes(filter.toLowerCase()) ||
+        post.body.toLowerCase().includes(filter.toLowerCase()),
     );
   }
-  
+
   return [...filteredPosts].sort((a, b) => {
     const aValue = a[sortBy];
     const bValue = b[sortBy];
-    
+
     if (sortOrder === 'asc') {
       return aValue > bValue ? 1 : -1;
     } else {
@@ -137,7 +138,7 @@ export const selectFilteredAndSortedPosts = (state: { posts: PostsState }) => {
   });
 };
 
-export const selectFavoriteStatus = (postId: number) => (state: { posts: PostsState }) => 
+export const selectFavoriteStatus = (postId: number) => (state: { posts: PostsState }) =>
   state.posts.favorites.includes(postId);
 
-export const selectPaginationInfo = (state: { posts: PostsState }) => state.posts.pagination; 
+export const selectPaginationInfo = (state: { posts: PostsState }) => state.posts.pagination;

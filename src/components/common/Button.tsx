@@ -1,7 +1,7 @@
 /**
  * A customizable button component that supports different variants, sizes, and loading states.
  * This component is built on top of TouchableOpacity and follows the app's theme system.
- * 
+ *
  * @example
  * ```tsx
  * <Button
@@ -41,7 +41,7 @@ interface ButtonProps extends TouchableOpacityProps {
 
 /**
  * A reusable button component that supports different visual styles and states.
- * 
+ *
  * @param props - The component props
  * @param props.title - The text to display inside the button
  * @param props.variant - The visual style variant ('primary' | 'secondary' | 'outline')
@@ -135,11 +135,7 @@ export const Button: React.FC<ButtonProps> = ({
   };
 
   return (
-    <TouchableOpacity
-      style={buttonStyles}
-      disabled={disabled || loading}
-      {...props}
-    >
+    <TouchableOpacity style={buttonStyles} disabled={disabled || loading} {...props}>
       {loading ? (
         <ActivityIndicator
           color={variant === 'outline' ? theme.primary.main : theme.text.inverse}
@@ -158,4 +154,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-}); 
+});
