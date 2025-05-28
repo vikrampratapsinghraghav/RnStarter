@@ -223,14 +223,14 @@ See the [LICENSE](LICENSE) file for more details.
 
 If this project saved you hours of setup time, consider supporting me:
 
-- ☕ [Buy Me a Coffee](https://www.buymeacoffee.com/yourusername)
-- 💬 [Message me on LinkedIn](https://www.linkedin.com/in/yourusername)
-- 📦 [Download the advanced version on Gumroad](https://gumroad.com/yourusername)
+- ☕ [Buy Me a Coffee](https://www.buymeacoffee.com/vikramps98)
+- 💬 [Message me on LinkedIn](https://www.linkedin.com/in/vikramps98)
+- 📦 [Download the advanced version on Gumroad](https://gumroad.com/vikramps98)
 
-Need customizations or features? Open an issue or contact me directly.
+Need customizations or features? [Open an issue](https://github.com/vikrampratapsinghraghav/RnStarter/issues) or contact me directly.
 
 ---
-Made with ❤️ by [Your Name/Organization]
+Made with ❤️ by [Vikram Pratap Singh Raghav](https://github.com/vikrampratapsinghraghav)
 
 ## 💅 Code Quality Tools
 
