@@ -34,14 +34,18 @@ A feature-rich React Native starter template with TypeScript support, built-in n
 - Centralized store configuration
 - Example slice with posts management
 - Async thunks for API calls
+- Custom hooks for state management:
+  - `useApi`: Type-safe API hook with caching and error handling
+  - `useDebounce`: Debounce hook for optimizing input handling
 
 ### 5. API Integration
 - Centralized API configuration
 - Type-safe API calls
-- Error handling
+- Error handling with custom AppError class
 - Response handling
 - Example endpoints for posts
 - Integration with JSONPlaceholder API
+- Built-in caching system for API responses
 
 ### 6. Common Components
 - Text component with theme and RTL support
@@ -49,6 +53,33 @@ A feature-rich React Native starter template with TypeScript support, built-in n
 - Loading indicators
 - Custom buttons
 - List components
+- SearchPosts component with debounced search
+
+### 7. Utility Functions
+- Formatters:
+  - Currency formatting
+  - Date formatting
+  - Text truncation
+  - File size formatting
+  - Phone number formatting
+- Validators:
+  - Email validation
+  - Password validation
+  - Phone number validation
+  - URL validation
+  - Credit card validation
+  - Date range validation
+- Helpers:
+  - Array operations (groupBy, sortBy, uniqueBy)
+  - Object operations (deepClone, pick, omit, flattenObject)
+  - Function utilities (debounce, throttle)
+  - Deep equality checking
+- Error Handling:
+  - Custom AppError class
+  - Structured error handling
+  - API error handling
+  - Safe function execution wrapper
+  - Error logging with device info
 
 ## 📦 Project Structure
 
@@ -60,6 +91,14 @@ src/
 │   └── types.ts         # API types
 ├── components/          # Reusable components
 │   └── common/         # Common components
+├── hooks/              # Custom hooks
+│   ├── useApi.ts      # API handling hook
+│   └── useDebounce.ts # Debounce hook
+├── utils/              # Utility functions
+│   ├── formatters.ts  # Formatting utilities
+│   ├── validators.ts  # Validation utilities
+│   ├── helpers.ts     # Helper functions
+│   └── errorHandler.ts # Error handling utilities
 ├── navigation/          # Navigation setup
 │   ├── types.ts        # Navigation types
 │   └── navigators/     # Navigation configurations
@@ -205,6 +244,68 @@ yarn format
 
 # Check if files are formatted
 yarn format:check
+```
+
+## 🪝 Custom Hooks
+
+The project includes several custom hooks to handle common patterns:
+
+### useApi
+A powerful hook for making API calls with built-in features:
+```typescript
+const { data, loading, error, refetch, clearCache } = useApi(
+  () => fetchData(),
+  {
+    cacheKey: 'unique-key',
+    cacheDuration: 300000,
+    enabled: true
+  }
+);
+```
+
+### useDebounce
+A utility hook for debouncing values:
+```typescript
+const debouncedValue = useDebounce(value, 500);
+```
+
+## 🛠 Utility Functions
+
+### Formatters
+```typescript
+import { formatCurrency, formatDate, truncateText } from './utils/formatters';
+
+const price = formatCurrency(100, 'USD');
+const date = formatDate(new Date(), 'MM/DD/YYYY');
+const text = truncateText('Long text...', 50);
+```
+
+### Validators
+```typescript
+import { isValidEmail, isValidPassword } from './utils/validators';
+
+const isValid = isValidEmail('user@example.com');
+const isStrongPassword = isValidPassword('password123');
+```
+
+### Helpers
+```typescript
+import { groupBy, deepClone } from './utils/helpers';
+
+const grouped = groupBy(items, 'category');
+const cloned = deepClone(complexObject);
+```
+
+### Error Handling
+```typescript
+import { handleApiError, logError } from './utils/errorHandler';
+
+try {
+  // API call
+} catch (error) {
+  const errorDetails = handleApiError(error);
+  logError(error);
+}
 ```
 
 ---

@@ -1,48 +1,135 @@
-import React, { useEffect, useCallback } from 'react';
-import { View, StyleSheet, FlatList, ActivityIndicator, RefreshControl } from 'react-native';
+import React, { useEffect, useCallback, useMemo } from 'react';
+import { View, StyleSheet, FlatList, ActivityIndicator, RefreshControl, TextInput } from 'react-native';
 import { Text } from './common';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { fetchPosts, deletePost } from '../store/slices/postsSlice';
+import {
+  fetchPaginatedPosts,
+  deletePost,
+  setFilter,
+  setSortBy,
+  setSortOrder,
+  toggleFavorite,
+  setPage,
+} from '../store/actions/posts.actions';
+import {
+  selectFilteredAndSortedPosts,
+  selectFavoriteStatus,
+  selectPaginationInfo,
+} from '../store/reducers/posts.reducer';
 import { useTheme } from '../theme/ThemeContext';
 import { TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { Post } from '../api/types';
 
 export const PostList = () => {
   const dispatch = useAppDispatch();
-  const { items: posts, loading, error } = useAppSelector((state) => state.posts);
+  const { loading, error } = useAppSelector((state) => state.posts);
+  const posts = useAppSelector(selectFilteredAndSortedPosts);
+  const pagination = useAppSelector(selectPaginationInfo);
   const { theme } = useTheme();
+  const sortOrder = useAppSelector(state => state.posts.sortOrder);
+
+  // Create a map of favorite statuses for all posts
+  const favoriteStatuses = useAppSelector(state => 
+    posts.reduce((acc, post) => {
+      acc[post.id] = selectFavoriteStatus(post.id)(state);
+      return acc;
+    }, {} as Record<number, boolean>)
+  );
 
   const loadPosts = useCallback(() => {
-    dispatch(fetchPosts());
-  }, [dispatch]);
+    dispatch(fetchPaginatedPosts({ 
+      page: pagination.currentPage, 
+      limit: pagination.itemsPerPage 
+    }));
+  }, [dispatch, pagination.currentPage, pagination.itemsPerPage]);
 
   useEffect(() => {
     loadPosts();
   }, [loadPosts]);
 
-  const handleDeletePost = (postId: number) => {
+  const handleDeletePost = useCallback((postId: number) => {
     dispatch(deletePost(postId));
-  };
+  }, [dispatch]);
 
-  const renderItem = ({ item }: { item: { id: number; title: string; body: string } }) => (
-    <View style={[styles.postCard, { backgroundColor: theme.background.paper }]}>
-      <View style={styles.postHeader}>
-        <Text variant="h4" style={styles.title}>{item.title}</Text>
-        <TouchableOpacity 
-          onPress={() => handleDeletePost(item.id)}
-          style={styles.deleteButton}
-        >
-          <Icon name="delete" size={24} color={theme.error.main} />
-        </TouchableOpacity>
+  const handleToggleFavorite = useCallback((postId: number) => {
+    dispatch(toggleFavorite(postId));
+  }, [dispatch]);
+
+  const handleSearch = useCallback((text: string) => {
+    dispatch(setFilter(text));
+  }, [dispatch]);
+
+  const handleSort = useCallback(() => {
+    dispatch(setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc'));
+  }, [dispatch, sortOrder]);
+
+  const handleLoadMore = useCallback(() => {
+    if (!loading && posts.length < pagination.totalItems) {
+      dispatch(setPage(pagination.currentPage + 1));
+    }
+  }, [dispatch, loading, posts.length, pagination.totalItems, pagination.currentPage]);
+
+  const renderItem = useCallback(({ item }: { item: Post }) => {
+    const isFavorite = favoriteStatuses[item.id];
+
+    return (
+      <View style={[styles.postCard, { backgroundColor: theme.background.paper }]}>
+        <View style={styles.postHeader}>
+          <Text variant="h4" style={styles.title}>{item.title}</Text>
+          <View style={styles.actionButtons}>
+            <TouchableOpacity 
+              onPress={() => handleToggleFavorite(item.id)}
+              style={styles.actionButton}
+            >
+              <Icon 
+                name={isFavorite ? "heart" : "heart-outline"} 
+                size={24} 
+                color={isFavorite ? theme.error.main : theme.text.secondary} 
+              />
+            </TouchableOpacity>
+            <TouchableOpacity 
+              onPress={() => handleDeletePost(item.id)}
+              style={styles.actionButton}
+            >
+              <Icon name="delete" size={24} color={theme.error.main} />
+            </TouchableOpacity>
+          </View>
+        </View>
+        <Text variant="body1" style={styles.body}>{item.body}</Text>
       </View>
-      <Text type="secondary" style={styles.body}>{item.body}</Text>
+    );
+  }, [theme, favoriteStatuses, handleToggleFavorite, handleDeletePost]);
+
+  const ListHeader = useCallback(() => (
+    <View style={styles.header}>
+      <TextInput
+        style={[styles.searchInput, { 
+          backgroundColor: theme.background.paper,
+          color: theme.text.primary,
+          borderColor: theme.text.secondary
+        }]}
+        placeholder="Search posts..."
+        placeholderTextColor={theme.text.secondary}
+        onChangeText={handleSearch}
+      />
+      <TouchableOpacity 
+        onPress={handleSort}
+        style={[styles.sortButton, { backgroundColor: theme.primary.main }]}
+      >
+        <Icon 
+          name={`sort-${sortOrder === 'asc' ? 'ascending' : 'descending'}`} 
+          size={24} 
+          color="#fff" 
+        />
+      </TouchableOpacity>
     </View>
-  );
+  ), [theme, handleSearch, handleSort, sortOrder]);
 
   if (error) {
     return (
       <View style={styles.centered}>
-        <Text type="error" style={styles.errorText}>{error}</Text>
+        <Text variant="body1" style={[styles.errorText, { color: theme.error.main }]}>{error}</Text>
         <TouchableOpacity 
           style={[styles.retryButton, { backgroundColor: theme.primary.main }]}
           onPress={loadPosts}
@@ -68,13 +155,16 @@ export const PostList = () => {
           tintColor={theme.primary.main}
         />
       }
+      ListHeaderComponent={ListHeader}
       ListEmptyComponent={
         !loading ? (
           <View style={styles.centered}>
-            <Text type="secondary" style={styles.emptyText}>No posts available</Text>
+            <Text variant="body1" style={styles.emptyText}>No posts available</Text>
           </View>
         ) : null
       }
+      onEndReached={handleLoadMore}
+      onEndReachedThreshold={0.5}
     />
   );
 };
@@ -83,6 +173,26 @@ const styles = StyleSheet.create({
   container: {
     padding: 16,
     flexGrow: 1,
+  },
+  header: {
+    flexDirection: 'row',
+    marginBottom: 16,
+    alignItems: 'center',
+  },
+  searchInput: {
+    flex: 1,
+    height: 40,
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    marginRight: 8,
+  },
+  sortButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   centered: {
     flex: 1,
@@ -125,8 +235,13 @@ const styles = StyleSheet.create({
   emptyText: {
     textAlign: 'center',
   },
-  deleteButton: {
+  actionButtons: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  actionButton: {
     padding: 4,
+    marginLeft: 8,
   },
   retryButton: {
     paddingHorizontal: 24,
