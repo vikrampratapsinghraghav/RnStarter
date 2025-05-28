@@ -1,4 +1,4 @@
-import { createReducer } from '@reduxjs/toolkit';
+import { createReducer, createSelector } from '@reduxjs/toolkit';
 import { Post } from '../../api/types';
 import {
   POST_ACTIONS,
@@ -114,29 +114,48 @@ export const postsReducer = createReducer(initialState, builder => {
 });
 
 // Selectors
-export const selectFilteredAndSortedPosts = (state: { posts: PostsState }) => {
-  const { items, filter, sortBy, sortOrder } = state.posts;
+const selectPosts = (state: { posts: PostsState }) => state.posts.items;
+const selectFilter = (state: { posts: PostsState }) => state.posts.filter;
+const selectSortBy = (state: { posts: PostsState }) => state.posts.sortBy;
+const selectSortOrder = (state: { posts: PostsState }) => state.posts.sortOrder;
+const selectFavorites = (state: { posts: PostsState }) => state.posts.favorites;
 
-  let filteredPosts = items;
-  if (filter) {
-    filteredPosts = items.filter(
-      post =>
-        post.title.toLowerCase().includes(filter.toLowerCase()) ||
-        post.body.toLowerCase().includes(filter.toLowerCase()),
-    );
-  }
-
-  return [...filteredPosts].sort((a, b) => {
-    const aValue = a[sortBy];
-    const bValue = b[sortBy];
-
-    if (sortOrder === 'asc') {
-      return aValue > bValue ? 1 : -1;
-    } else {
-      return aValue < bValue ? 1 : -1;
+export const selectFilteredAndSortedPosts = createSelector(
+  [selectPosts, selectFilter, selectSortBy, selectSortOrder],
+  (items, filter, sortBy, sortOrder) => {
+    let filteredPosts = items;
+    if (filter) {
+      filteredPosts = items.filter(
+        post =>
+          post.title.toLowerCase().includes(filter.toLowerCase()) ||
+          post.body.toLowerCase().includes(filter.toLowerCase()),
+      );
     }
-  });
-};
+
+    return [...filteredPosts].sort((a, b) => {
+      const aValue = a[sortBy];
+      const bValue = b[sortBy];
+
+      if (sortOrder === 'asc') {
+        return aValue > bValue ? 1 : -1;
+      } else {
+        return aValue < bValue ? 1 : -1;
+      }
+    });
+  },
+);
+
+export const selectFavoriteStatuses = createSelector(
+  [selectPosts, selectFavorites],
+  (posts, favorites) =>
+    posts.reduce(
+      (acc, post) => {
+        acc[post.id] = favorites.includes(post.id);
+        return acc;
+      },
+      {} as Record<number, boolean>,
+    ),
+);
 
 export const selectFavoriteStatus = (postId: number) => (state: { posts: PostsState }) =>
   state.posts.favorites.includes(postId);

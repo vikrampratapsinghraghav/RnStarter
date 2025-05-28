@@ -20,10 +20,11 @@ import {
 } from '../store/actions/posts.actions';
 import {
   selectFilteredAndSortedPosts,
-  selectFavoriteStatus,
+  selectFavoriteStatuses,
   selectPaginationInfo,
 } from '../store/reducers/posts.reducer';
 import { useTheme } from '../theme/ThemeContext';
+import { useTranslation } from '../localization/useTranslation';
 import { TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Post } from '../api/types';
@@ -32,20 +33,11 @@ export const PostList = () => {
   const dispatch = useAppDispatch();
   const { loading, error } = useAppSelector(state => state.posts);
   const posts = useAppSelector(selectFilteredAndSortedPosts);
+  const favoriteStatuses = useAppSelector(selectFavoriteStatuses);
   const pagination = useAppSelector(selectPaginationInfo);
   const { theme } = useTheme();
+  const { t } = useTranslation();
   const sortOrder = useAppSelector(state => state.posts.sortOrder);
-
-  // Create a map of favorite statuses for all posts
-  const favoriteStatuses = useAppSelector(state =>
-    posts.reduce(
-      (acc, post) => {
-        acc[post.id] = selectFavoriteStatus(post.id)(state);
-        return acc;
-      },
-      {} as Record<number, boolean>,
-    ),
-  );
 
   const loadPosts = useCallback(() => {
     dispatch(
@@ -96,7 +88,7 @@ export const PostList = () => {
       const isFavorite = favoriteStatuses[item.id];
 
       return (
-        <View style={[styles.postCard, { backgroundColor: theme.background.paper }]}>
+        <View style={[styles.postCard, { backgroundColor: theme.background.default }]}>
           <View style={styles.postHeader}>
             <Text variant="h4" style={styles.title}>
               {item.title}
@@ -104,7 +96,8 @@ export const PostList = () => {
             <View style={styles.actionButtons}>
               <TouchableOpacity
                 onPress={() => handleToggleFavorite(item.id)}
-                style={styles.actionButton}>
+                style={styles.actionButton}
+                accessibilityLabel={t('posts.actions.favorite')}>
                 <Icon
                   name={isFavorite ? 'heart' : 'heart-outline'}
                   size={24}
@@ -113,7 +106,8 @@ export const PostList = () => {
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => handleDeletePost(item.id)}
-                style={styles.actionButton}>
+                style={styles.actionButton}
+                accessibilityLabel={t('posts.actions.delete')}>
                 <Icon name="delete" size={24} color={theme.error.main} />
               </TouchableOpacity>
             </View>
@@ -124,7 +118,7 @@ export const PostList = () => {
         </View>
       );
     },
-    [theme, favoriteStatuses, handleToggleFavorite, handleDeletePost],
+    [theme, favoriteStatuses, handleToggleFavorite, handleDeletePost, t],
   );
 
   const ListHeader = useCallback(
@@ -134,39 +128,44 @@ export const PostList = () => {
           style={[
             styles.searchInput,
             {
-              backgroundColor: theme.background.paper,
+              backgroundColor: theme.background.default,
               color: theme.text.primary,
               borderColor: theme.text.secondary,
             },
           ]}
-          placeholder="Search posts..."
+          placeholder={t('posts.search.placeholder')}
           placeholderTextColor={theme.text.secondary}
           onChangeText={handleSearch}
+          accessibilityLabel={t('posts.search.placeholder')}
         />
         <TouchableOpacity
           onPress={handleSort}
-          style={[styles.sortButton, { backgroundColor: theme.primary.main }]}>
+          style={[styles.sortButton, { backgroundColor: theme.primary.main }]}
+          accessibilityLabel={t('posts.actions.sort')}>
           <Icon
             name={`sort-${sortOrder === 'asc' ? 'ascending' : 'descending'}`}
             size={24}
-            color="#fff"
+            color={theme.text.inverse}
           />
         </TouchableOpacity>
       </View>
     ),
-    [theme, handleSearch, handleSort, sortOrder],
+    [theme, handleSearch, handleSort, sortOrder, t],
   );
 
   if (error) {
     return (
       <View style={styles.centered}>
         <Text variant="body1" style={[styles.errorText, { color: theme.error.main }]}>
-          {error}
+          {t('posts.errors.fetch')}
         </Text>
         <TouchableOpacity
           style={[styles.retryButton, { backgroundColor: theme.primary.main }]}
-          onPress={loadPosts}>
-          <Text style={styles.retryText}>Retry</Text>
+          onPress={loadPosts}
+          accessibilityLabel={t('posts.errors.retry')}>
+          <Text style={[styles.retryText, { color: theme.text.inverse }]}>
+            {t('posts.errors.retry')}
+          </Text>
         </TouchableOpacity>
       </View>
     );
@@ -192,7 +191,7 @@ export const PostList = () => {
         !loading ? (
           <View style={styles.centered}>
             <Text variant="body1" style={styles.emptyText}>
-              No posts available
+              {t('posts.empty.title')}
             </Text>
           </View>
         ) : null
@@ -284,7 +283,6 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   retryText: {
-    color: '#FFFFFF',
     fontWeight: '600',
   },
 });
