@@ -1,7 +1,8 @@
 import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { useTheme } from '../theme/ThemeContext';
-import { useTranslation } from '../localization/useTranslation';
+import { useTranslation } from 'react-i18next';
+import { I18nManager } from 'react-native';
 import { DrawerParamList } from './types';
 
 // Import screens
@@ -17,16 +18,18 @@ export const DrawerNavigator = () => {
 
   return (
     <Drawer.Navigator
+      defaultStatus="closed"
       screenOptions={{
         headerStyle: {
-          backgroundColor: theme.background.paper,
+          backgroundColor: theme.background.primary,
         },
         headerTintColor: theme.text.primary,
         drawerStyle: {
-          backgroundColor: theme.background.paper,
+          backgroundColor: theme.background.primary,
         },
-        drawerActiveTintColor: theme.primary.main,
-        drawerInactiveTintColor: theme.text.disabled,
+        drawerActiveTintColor: theme.colors.primary,
+        drawerInactiveTintColor: theme.text.secondary,
+        drawerPosition: I18nManager.isRTL ? 'right' : 'left',
       }}>
       <Drawer.Screen
         name="MainTabs"

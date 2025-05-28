@@ -1,7 +1,30 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { useColorScheme, Platform } from 'react-native';
+import { useColorScheme, Platform, I18nManager } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import type { Theme } from './types';
+
+export interface Theme {
+  isDark: boolean;
+  isRTL: boolean;
+  background: {
+    primary: string;
+    secondary: string;
+    tertiary: string;
+  };
+  text: {
+    primary: string;
+    secondary: string;
+    tertiary: string;
+    inverse: string;
+  };
+  colors: {
+    primary: string;
+    secondary: string;
+    success: string;
+    warning: string;
+    error: string;
+    info: string;
+  };
+}
 
 const THEME_STORAGE_KEY = '@theme_preference';
 const THEME_STORAGE_VERSION = '1.0';
@@ -21,81 +44,25 @@ interface ThemeContextType {
 
 const lightTheme: Theme = {
   isDark: false,
+  isRTL: I18nManager.isRTL,
   background: {
-    default: '#FFFFFF',
-    paper: '#F5F5F5',
-    elevated: '#FFFFFF',
+    primary: '#FFFFFF',
+    secondary: '#F5F5F5',
+    tertiary: '#E0E0E0',
   },
   text: {
-    primary: '#212121',
-    secondary: '#616161',
-    disabled: '#9E9E9E',
+    primary: '#000000',
+    secondary: '#666666',
+    tertiary: '#999999',
     inverse: '#FFFFFF',
   },
-  primary: {
-    main: '#1976D2',
-    light: '#42A5F5',
-    dark: '#1565C0',
-    contrastText: '#FFFFFF',
-  },
-  secondary: {
-    main: '#9C27B0',
-    light: '#BA68C8',
-    dark: '#7B1FA2',
-    contrastText: '#FFFFFF',
-  },
-  error: {
-    main: '#D32F2F',
-    light: '#EF5350',
-    dark: '#C62828',
-    contrastText: '#FFFFFF',
-  },
-  warning: {
-    main: '#ED6C02',
-    light: '#FF9800',
-    dark: '#E65100',
-    contrastText: '#FFFFFF',
-  },
-  success: {
-    main: '#2E7D32',
-    light: '#4CAF50',
-    dark: '#1B5E20',
-    contrastText: '#FFFFFF',
-  },
-  grey: {
-    50: '#FAFAFA',
-    100: '#F5F5F5',
-    200: '#EEEEEE',
-    300: '#E0E0E0',
-    400: '#BDBDBD',
-    500: '#9E9E9E',
-    600: '#757575',
-    700: '#616161',
-    800: '#424242',
-    900: '#212121',
-  },
-  typography: {
-    fontFamily: {
-      regular: Platform.select({ ios: 'System', android: 'Roboto' }) || 'System',
-      medium: Platform.select({ ios: 'System', android: 'Roboto' }) || 'System',
-      bold: Platform.select({ ios: 'System', android: 'Roboto-Bold' }) || 'System',
-    },
-    fontSize: {
-      xs: 12,
-      sm: 14,
-      md: 16,
-      lg: 18,
-      xl: 20,
-      xxl: 24,
-      xxxl: 32,
-    },
-  },
-  spacing: {
-    xs: 4,
-    sm: 8,
-    md: 16,
-    lg: 24,
-    xl: 32,
+  colors: {
+    primary: '#007AFF',
+    secondary: '#5856D6',
+    success: '#34C759',
+    warning: '#FF9500',
+    error: '#FF3B30',
+    info: '#5856D6',
   },
 };
 
@@ -103,15 +70,15 @@ const darkTheme: Theme = {
   ...lightTheme,
   isDark: true,
   background: {
-    default: '#121212',
-    paper: '#1E1E1E',
-    elevated: '#2C2C2C',
+    primary: '#000000',
+    secondary: '#1C1C1E',
+    tertiary: '#2C2C2E',
   },
   text: {
     primary: '#FFFFFF',
-    secondary: '#BDBDBD',
-    disabled: '#757575',
-    inverse: '#212121',
+    secondary: '#EBEBF5',
+    tertiary: '#EBEBF599',
+    inverse: '#000000',
   },
 };
 
@@ -125,7 +92,7 @@ const ThemeContext = createContext<ThemeContextType>({
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [theme, setTheme] = useState<Theme>(lightTheme);
   const [isLoading, setIsLoading] = useState(true);
-  const systemColorScheme = useColorScheme();
+  const colorScheme = useColorScheme();
 
   const saveThemePreference = useCallback(async (isDark: boolean) => {
     try {
@@ -150,7 +117,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
           // If the stored version doesn't match, fall back to system preference
           if (preference.version !== THEME_STORAGE_VERSION) {
-            const systemPreferredTheme = systemColorScheme === 'dark' ? darkTheme : lightTheme;
+            const systemPreferredTheme = colorScheme === 'dark' ? darkTheme : lightTheme;
             setTheme(systemPreferredTheme);
             await saveThemePreference(systemPreferredTheme.isDark);
             return;
@@ -159,12 +126,12 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           setTheme(preference.isDark ? darkTheme : lightTheme);
         } catch (parseError) {
           console.error('Failed to parse theme preference:', parseError);
-          setTheme(systemColorScheme === 'dark' ? darkTheme : lightTheme);
+          setTheme(colorScheme === 'dark' ? darkTheme : lightTheme);
         }
       } else {
         // No saved preference, use system preference
-        setTheme(systemColorScheme === 'dark' ? darkTheme : lightTheme);
-        await saveThemePreference(systemColorScheme === 'dark');
+        setTheme(colorScheme === 'dark' ? darkTheme : lightTheme);
+        await saveThemePreference(colorScheme === 'dark');
       }
     } catch (error) {
       console.error('Failed to load theme preference:', error);
@@ -172,7 +139,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     } finally {
       setIsLoading(false);
     }
-  }, [systemColorScheme, saveThemePreference]);
+  }, [colorScheme, saveThemePreference]);
 
   // Load theme preference when component mounts
   useEffect(() => {
@@ -184,7 +151,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     if (!isLoading) {
       loadThemePreference();
     }
-  }, [systemColorScheme, loadThemePreference, isLoading]);
+  }, [colorScheme, loadThemePreference, isLoading]);
 
   const setThemeMode = useCallback(
     async (isDark: boolean) => {

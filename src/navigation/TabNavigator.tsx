@@ -2,10 +2,10 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useTheme } from '../theme/ThemeContext';
-import { useTranslation } from '../localization/useTranslation';
+import { useTranslation } from 'react-i18next';
 import { TabParamList } from './types';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, I18nManager, StyleSheet } from 'react-native';
 
 // Import screens
 import { HomeScreen } from '../screens/HomeScreen';
@@ -22,7 +22,10 @@ export const TabNavigator = () => {
   const DrawerButton = () => (
     <TouchableOpacity
       onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
-      style={{ marginLeft: 16 }}>
+      style={[
+        styles.drawerButton,
+        { marginLeft: I18nManager.isRTL ? 0 : 16, marginRight: I18nManager.isRTL ? 16 : 0 },
+      ]}>
       <Icon name="menu" size={24} color={theme.text.primary} />
     </TouchableOpacity>
   );
@@ -31,16 +34,17 @@ export const TabNavigator = () => {
     <Tab.Navigator
       screenOptions={{
         tabBarStyle: {
-          backgroundColor: theme.background.paper,
-          borderTopColor: theme.background.elevated,
+          backgroundColor: theme.background.primary,
+          borderTopColor: theme.background.tertiary,
         },
-        tabBarActiveTintColor: theme.primary.main,
-        tabBarInactiveTintColor: theme.text.disabled,
+        tabBarActiveTintColor: theme.colors.primary,
+        tabBarInactiveTintColor: theme.text.secondary,
         headerStyle: {
-          backgroundColor: theme.background.paper,
+          backgroundColor: theme.background.primary,
         },
         headerTintColor: theme.text.primary,
-        headerLeft: () => <DrawerButton />,
+        headerLeft: I18nManager.isRTL ? undefined : () => <DrawerButton />,
+        headerRight: I18nManager.isRTL ? () => <DrawerButton /> : undefined,
       }}>
       <Tab.Screen
         name="Home"
@@ -69,3 +73,9 @@ export const TabNavigator = () => {
     </Tab.Navigator>
   );
 };
+
+const styles = StyleSheet.create({
+  drawerButton: {
+    padding: 8,
+  },
+});
