@@ -18,6 +18,7 @@ export default {
     },
   },
   auth: {
+    initializing: 'Initializing app...',
     login: {
       title: 'Welcome Back',
       email: 'Email',

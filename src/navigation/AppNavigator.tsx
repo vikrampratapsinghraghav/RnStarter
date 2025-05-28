@@ -2,7 +2,7 @@ import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { HomeScreen } from '../screens/home/HomeScreen';
+import { HomeScreen } from '@screens/home/HomeScreen';
 
 export type AppStackParamList = {
   Home: undefined;

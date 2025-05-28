@@ -1,7 +1,7 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { AuthNavigator } from '../screens/auth/navigation/AuthNavigator';
-import { useAuth } from '../screens/auth/context/AuthContext';
+import { AuthNavigator } from '@screens/auth/navigation/AuthNavigator';
+import { useAuth } from '@screens/auth/context/AuthContext';
 import AppNavigator from './AppNavigator';
 import { DrawerNavigator } from './DrawerNavigator';
 

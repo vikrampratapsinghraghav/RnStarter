@@ -1,98 +1,95 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import { useTheme } from '../theme/ThemeContext';
-import { useTranslation } from '../localization/useTranslation';
-import { Button } from '../components';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { useTheme } from '@theme/ThemeContext';
+import { useTranslation } from '@localization/useTranslation';
+import { Text } from '@components/common';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export const ThemeSettingsScreen = () => {
-  const { theme, toggleTheme } = useTheme();
+  const { theme, themeMode, setThemeMode } = useTheme();
   const { t } = useTranslation();
 
+  const ThemeOption = ({
+    mode,
+    icon,
+    label,
+  }: {
+    mode: 'light' | 'dark' | 'system';
+    icon: string;
+    label: string;
+  }) => (
+    <TouchableOpacity
+      style={[
+        styles.themeOption,
+        {
+          backgroundColor: theme.background.paper,
+          borderColor: themeMode === mode ? theme.primary.main : 'transparent',
+        },
+      ]}
+      onPress={() => setThemeMode(mode)}>
+      <Icon
+        name={icon}
+        size={24}
+        color={themeMode === mode ? theme.primary.main : theme.text.primary}
+      />
+      <Text
+        variant="body1"
+        style={[
+          styles.themeLabel,
+          { color: themeMode === mode ? theme.primary.main : theme.text.primary },
+        ]}>
+        {label}
+      </Text>
+      {themeMode === mode && (
+        <Icon name="check" size={20} color={theme.primary.main} style={styles.checkIcon} />
+      )}
+    </TouchableOpacity>
+  );
+
   return (
-    <ScrollView style={[styles.container, { backgroundColor: theme.background.default }]}>
-      <Text style={[styles.title, { color: theme.text.primary }]}>{t('theme.title')}</Text>
-      <Text style={[styles.description, { color: theme.text.secondary }]}>
+    <View style={[styles.container, { backgroundColor: theme.background.default }]}>
+      <Text variant="h3" style={[styles.title, { color: theme.text.primary }]}>
+        {t('settings.theme.title')}
+      </Text>
+      <Text variant="body1" style={[styles.description, { color: theme.text.secondary }]}>
         {t('settings.theme.description')}
       </Text>
 
-      <View style={styles.buttonContainer}>
-        <Button
-          title={theme.isDark ? t('theme.light') : t('theme.dark')}
-          onPress={toggleTheme}
-          variant="primary"
-        />
+      <View style={styles.optionsContainer}>
+        <ThemeOption mode="light" icon="white-balance-sunny" label={t('theme.light')} />
+        <ThemeOption mode="dark" icon="moon-waning-crescent" label={t('theme.dark')} />
+        <ThemeOption mode="system" icon="theme-light-dark" label={t('theme.system')} />
       </View>
-
-      <View style={[styles.section, { backgroundColor: theme.background.paper }]}>
-        <Text style={[styles.sectionTitle, { color: theme.text.primary }]}>
-          {t('theme.colors.title')}
-        </Text>
-        <View style={styles.colorGrid}>
-          {[
-            { color: theme.primary.main, name: t('theme.colors.primary') },
-            { color: theme.secondary.main, name: t('theme.colors.secondary') },
-            { color: theme.error.main, name: t('theme.colors.error') },
-            { color: theme.success.main, name: t('theme.colors.success') },
-            { color: theme.warning.main, name: t('theme.colors.warning') },
-          ].map((item, index) => (
-            <View key={index} style={styles.colorItem}>
-              <View style={[styles.colorBox, { backgroundColor: item.color }]} />
-              <Text style={[styles.colorName, { color: theme.text.primary }]}>{item.name}</Text>
-            </View>
-          ))}
-        </View>
-      </View>
-    </ScrollView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    padding: 16,
   },
   title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginHorizontal: 16,
-    marginTop: 16,
-  },
-  description: {
-    fontSize: 16,
-    marginHorizontal: 16,
-    marginTop: 8,
-    marginBottom: 24,
-  },
-  buttonContainer: {
-    padding: 16,
-  },
-  section: {
-    marginTop: 24,
-    padding: 16,
-    borderRadius: 8,
-    marginHorizontal: 16,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 16,
-  },
-  colorGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 16,
-  },
-  colorItem: {
-    alignItems: 'center',
-    width: 80,
-  },
-  colorBox: {
-    width: 60,
-    height: 60,
-    borderRadius: 8,
     marginBottom: 8,
   },
-  colorName: {
-    fontSize: 12,
-    textAlign: 'center',
+  description: {
+    marginBottom: 24,
+  },
+  optionsContainer: {
+    gap: 12,
+  },
+  themeOption: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 16,
+    borderRadius: 12,
+    borderWidth: 2,
+  },
+  themeLabel: {
+    marginLeft: 12,
+    flex: 1,
+  },
+  checkIcon: {
+    marginLeft: 8,
   },
 });

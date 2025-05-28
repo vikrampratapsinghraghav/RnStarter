@@ -9,13 +9,13 @@ import React from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider as ReduxProvider } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
-import { store } from './src/store';
-import { RootNavigator } from './src/navigation/RootNavigator';
-import { ThemeProvider } from './src/theme/ThemeContext';
-import { LanguageProvider } from './src/localization/LanguageContext';
-import { ErrorBoundary } from './src/components/common/ErrorBoundary';
-import { initI18n } from './src/localization/i18n';
-import { AuthProvider } from './src/screens/auth/context/AuthContext';
+import { store } from '@store';
+import { RootNavigator } from '@navigation/RootNavigator';
+import { ThemeProvider } from '@theme/ThemeContext';
+import { LanguageProvider } from '@localization/LanguageContext';
+import { ErrorBoundary } from '@components/common/ErrorBoundary';
+import { initI18n } from '@localization/i18n';
+import { AuthProvider } from '@screens/auth/context/AuthContext';
 
 /**
  * Initialize i18n configuration

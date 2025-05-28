@@ -7,8 +7,8 @@ import {
   RefreshControl,
   TextInput,
 } from 'react-native';
-import { Text } from './common';
-import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { Text } from '@components/common';
+import { useAppDispatch, useAppSelector } from '@store/hooks';
 import {
   fetchPaginatedPosts,
   deletePost,
@@ -17,17 +17,17 @@ import {
   setSortOrder,
   toggleFavorite,
   setPage,
-} from '../store/actions/posts.actions';
+} from '@store/actions/posts.actions';
 import {
   selectFilteredAndSortedPosts,
   selectFavoriteStatuses,
   selectPaginationInfo,
-} from '../store/reducers/posts.reducer';
-import { useTheme } from '../theme/ThemeContext';
-import { useTranslation } from '../localization/useTranslation';
+} from '@store/reducers/posts.reducer';
+import { useTheme } from '@theme/ThemeContext';
+import { useTranslation } from '@localization/useTranslation';
 import { TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Post } from '../api/types';
+import { Post } from '@api/types';
 
 export const PostList = () => {
   const dispatch = useAppDispatch();

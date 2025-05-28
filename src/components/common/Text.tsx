@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text as RNText, TextProps as RNTextProps, StyleSheet, I18nManager } from 'react-native';
-import { useTheme } from '../../theme/ThemeContext';
+import { useTheme } from '@theme/ThemeContext';
 
 export interface TextProps extends RNTextProps {
   variant?: 'h1' | 'h2' | 'h3' | 'h4' | 'body1' | 'body2' | 'caption' | 'button';

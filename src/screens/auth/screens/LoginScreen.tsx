@@ -4,12 +4,11 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Text } from '../../../components/common';
-import { useTheme } from '../../../theme/ThemeContext';
-import { useTranslation } from '../../../localization/useTranslation';
+import { Text, Button } from '@components/common';
+import { useTheme } from '@theme/ThemeContext';
+import { useTranslation } from '@localization/useTranslation';
 import { AuthStackParamList, LoginFormData, loginSchema } from '../types';
 import { FormInput } from '../components/FormInput';
-import { Button } from '../../../components/common';
 import { useAuth } from '../context/AuthContext';
 
 type LoginScreenNavigationProp = NativeStackNavigationProp<AuthStackParamList, 'Login'>;
