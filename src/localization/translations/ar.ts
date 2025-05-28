@@ -12,6 +12,10 @@ export default {
       confirm: 'تأكيد',
       delete: 'حذف',
       continue: 'متابعة',
+      retry: 'إعادة المحاولة',
+    },
+    search: {
+      placeholder: 'بحث...',
     },
   },
   navigation: {
@@ -32,6 +36,24 @@ export default {
       title: 'الإعدادات',
       theme: 'إعدادات السمة',
       language: 'إعدادات اللغة',
+    },
+  },
+  posts: {
+    search: {
+      placeholder: 'البحث في المنشورات...',
+    },
+    empty: {
+      title: 'لا توجد منشورات',
+    },
+    actions: {
+      favorite: 'تبديل المفضلة',
+      delete: 'حذف المنشور',
+      sort: 'ترتيب المنشورات',
+    },
+    errors: {
+      fetch: 'فشل في جلب المنشورات',
+      delete: 'فشل في حذف المنشور',
+      retry: 'حاول مرة أخرى',
     },
   },
   theme: {

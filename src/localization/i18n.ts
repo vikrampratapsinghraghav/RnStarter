@@ -3,6 +3,7 @@ import { initReactI18next } from 'react-i18next';
 import { I18nManager } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import RNRestart from 'react-native-restart';
+import * as RNLocalize from 'react-native-localize';
 
 // Import translations
 import en from './translations/en';
@@ -15,6 +16,26 @@ const resources = {
   ar: {
     translation: ar,
   },
+} as const;
+
+type LanguageKey = keyof typeof resources;
+
+const getInitialLanguage = async (): Promise<LanguageKey> => {
+  try {
+    // First try to get the saved language preference
+    const savedLanguage = await AsyncStorage.getItem('@user_preferred_language');
+    if (savedLanguage && resources[savedLanguage as LanguageKey]) {
+      return savedLanguage as LanguageKey;
+    }
+
+    // Fall back to device locale
+    const locale = RNLocalize.getLocales()[0];
+    const languageCode = locale?.languageCode || 'en';
+    return (resources[languageCode as LanguageKey] ? languageCode : 'en') as LanguageKey;
+  } catch (error) {
+    console.error('Error getting initial language:', error);
+    return 'en';
+  }
 };
 
 export const setLanguageAndDirection = async (language: string): Promise<boolean> => {
@@ -50,13 +71,26 @@ export const setLanguageAndDirection = async (language: string): Promise<boolean
   }
 };
 
-i18n.use(initReactI18next).init({
-  resources,
-  lng: 'en', // Default language
-  fallbackLng: 'en',
-  interpolation: {
-    escapeValue: false,
-  },
-});
+// Initialize i18next
+const initI18n = async () => {
+  const initialLanguage = await getInitialLanguage();
+  
+  await i18n
+    .use(initReactI18next)
+    .init({
+      resources,
+      lng: initialLanguage,
+      fallbackLng: 'en',
+      interpolation: {
+        escapeValue: false,
+      },
+      react: {
+        useSuspense: false,
+      },
+    });
 
+  return i18n;
+};
+
+export { initI18n };
 export default i18n;

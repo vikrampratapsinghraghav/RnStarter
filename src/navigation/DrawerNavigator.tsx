@@ -1,7 +1,7 @@
 import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { useTheme } from '../theme/ThemeContext';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '../localization/useTranslation';
 import { I18nManager } from 'react-native';
 import { DrawerParamList } from './types';
 
@@ -21,13 +21,13 @@ export const DrawerNavigator = () => {
       defaultStatus="closed"
       screenOptions={{
         headerStyle: {
-          backgroundColor: theme.background.primary,
+          backgroundColor: theme.background.default,
         },
         headerTintColor: theme.text.primary,
         drawerStyle: {
-          backgroundColor: theme.background.primary,
+          backgroundColor: theme.background.default,
         },
-        drawerActiveTintColor: theme.colors.primary,
+        drawerActiveTintColor: theme.primary.main,
         drawerInactiveTintColor: theme.text.secondary,
         drawerPosition: I18nManager.isRTL ? 'right' : 'left',
       }}>

@@ -16,12 +16,12 @@
 import React from 'react';
 import {
   TouchableOpacity,
-  Text,
+  ActivityIndicator,
   StyleSheet,
   TouchableOpacityProps,
-  ActivityIndicator,
-  TextStyle,
+  ViewStyle,
 } from 'react-native';
+import { Text } from './Text';
 import { useTheme } from '../../theme/ThemeContext';
 
 /**
@@ -33,10 +33,10 @@ interface ButtonProps extends TouchableOpacityProps {
   title: string;
   /** The visual style variant of the button */
   variant?: 'primary' | 'secondary' | 'outline';
-  /** The size of the button, affecting padding and font size */
-  size?: 'small' | 'medium' | 'large';
   /** Whether to show a loading spinner instead of the title */
   loading?: boolean;
+  /** Additional styles to apply to the button */
+  style?: ViewStyle;
 }
 
 /**
@@ -45,23 +45,22 @@ interface ButtonProps extends TouchableOpacityProps {
  * @param props - The component props
  * @param props.title - The text to display inside the button
  * @param props.variant - The visual style variant ('primary' | 'secondary' | 'outline')
- * @param props.size - The size of the button ('small' | 'medium' | 'large')
  * @param props.loading - Whether to show a loading spinner
  * @param props.style - Additional styles to apply to the button
  * @param props.disabled - Whether the button is disabled
  */
-export const Button: React.FC<ButtonProps> = ({
+export const Button = ({
   title,
   variant = 'primary',
-  size = 'medium',
   loading = false,
   style,
   disabled,
   ...props
-}) => {
+}: ButtonProps) => {
   const { theme } = useTheme();
 
-  const getVariantColor = () => {
+  const getBackgroundColor = () => {
+    if (disabled) return theme.text.disabled;
     switch (variant) {
       case 'primary':
         return theme.primary.main;
@@ -74,74 +73,35 @@ export const Button: React.FC<ButtonProps> = ({
     }
   };
 
-  const getTextColor = (): string => {
-    if (disabled) {
-      return theme.text.disabled;
-    }
-    if (variant === 'outline') {
-      return theme.primary.main;
-    }
-    return theme.text.inverse;
-  };
-
-  const getPadding = () => {
-    switch (size) {
-      case 'small':
-        return {
-          paddingVertical: theme.spacing.xs,
-          paddingHorizontal: theme.spacing.sm,
-        };
-      case 'large':
-        return {
-          paddingVertical: theme.spacing.md,
-          paddingHorizontal: theme.spacing.lg,
-        };
+  const getTextColor = () => {
+    if (disabled) return theme.text.inverse;
+    switch (variant) {
+      case 'outline':
+        return theme.primary.main;
       default:
-        return {
-          paddingVertical: theme.spacing.sm,
-          paddingHorizontal: theme.spacing.md,
-        };
+        return theme.text.inverse;
     }
-  };
-
-  const getFontSize = (): number => {
-    switch (size) {
-      case 'small':
-        return theme.typography.fontSize.sm;
-      case 'large':
-        return theme.typography.fontSize.lg;
-      default:
-        return theme.typography.fontSize.md;
-    }
-  };
-
-  const buttonStyles = [
-    styles.base,
-    {
-      backgroundColor: getVariantColor(),
-      borderWidth: variant === 'outline' ? 1 : 0,
-      borderColor: variant === 'outline' ? theme.primary.main : undefined,
-      ...getPadding(),
-    },
-    disabled && { opacity: 0.5 },
-    style,
-  ];
-
-  const textStyles: TextStyle = {
-    fontFamily: theme.typography.fontFamily.medium,
-    fontSize: getFontSize(),
-    color: getTextColor(),
-    textAlign: 'center',
   };
 
   return (
-    <TouchableOpacity style={buttonStyles} disabled={disabled || loading} {...props}>
+    <TouchableOpacity
+      style={[
+        styles.button,
+        {
+          backgroundColor: getBackgroundColor(),
+          borderColor: variant === 'outline' ? theme.primary.main : 'transparent',
+          borderWidth: variant === 'outline' ? 1 : 0,
+        },
+        style,
+      ]}
+      disabled={disabled || loading}
+      {...props}>
       {loading ? (
-        <ActivityIndicator
-          color={variant === 'outline' ? theme.primary.main : theme.text.inverse}
-        />
+        <ActivityIndicator color={getTextColor()} />
       ) : (
-        <Text style={textStyles}>{title}</Text>
+        <Text variant="button" style={{ color: getTextColor() }}>
+          {title}
+        </Text>
       )}
     </TouchableOpacity>
   );
@@ -149,9 +109,11 @@ export const Button: React.FC<ButtonProps> = ({
 
 // Styles for the button component
 const styles = StyleSheet.create({
-  base: {
+  button: {
+    height: 48,
     borderRadius: 8,
-    alignItems: 'center',
     justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 24,
   },
 });

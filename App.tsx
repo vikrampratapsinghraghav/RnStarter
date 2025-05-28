@@ -6,31 +6,37 @@
  */
 import './gesture-handler';
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider as ReduxProvider } from 'react-redux';
+import { NavigationContainer } from '@react-navigation/native';
 import { store } from './src/store';
+import { RootNavigator } from './src/navigation/RootNavigator';
 import { ThemeProvider } from './src/theme/ThemeContext';
 import { LanguageProvider } from './src/localization/LanguageContext';
-import { DrawerNavigator } from './src/navigation/DrawerNavigator';
 import { ErrorBoundary } from './src/components/common/ErrorBoundary';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { initI18n } from './src/localization/i18n';
+import { AuthProvider } from './src/screens/auth/context/AuthContext';
 
 /**
- * Root component that provides theme context and error boundary
+ * Initialize i18n configuration
  */
+initI18n();
+
 const App = () => {
   return (
     <ErrorBoundary>
       <ReduxProvider store={store}>
-        <SafeAreaProvider>
-          <ThemeProvider>
-            <LanguageProvider>
-              <NavigationContainer>
-                <DrawerNavigator />
-              </NavigationContainer>
-            </LanguageProvider>
-          </ThemeProvider>
-        </SafeAreaProvider>
+        <ThemeProvider>
+          <LanguageProvider>
+            <AuthProvider>
+              <SafeAreaProvider>
+                <NavigationContainer>
+                  <RootNavigator />
+                </NavigationContainer>
+              </SafeAreaProvider>
+            </AuthProvider>
+          </LanguageProvider>
+        </ThemeProvider>
       </ReduxProvider>
     </ErrorBoundary>
   );

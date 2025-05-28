@@ -1,0 +1,59 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": {
+      "general": "Something went wrong",
+      "tryAgain": "Try again"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Welcome Back",
+      "email": "Email",
+      "emailPlaceholder": "Enter your email",
+      "password": "Password",
+      "passwordPlaceholder": "Enter your password",
+      "submit": "Login",
+      "noAccount": "Don't have an account?",
+      "signup": "Sign up",
+      "error": {
+        "invalidCredentials": "Invalid email or password",
+        "general": "Failed to login. Please try again.",
+        "emailRequired": "Email is required",
+        "emailInvalid": "Invalid email address",
+        "passwordRequired": "Password is required",
+        "passwordLength": "Password must be at least 8 characters"
+      }
+    },
+    "signup": {
+      "title": "Create Account",
+      "name": "Name",
+      "namePlaceholder": "Enter your name",
+      "email": "Email",
+      "emailPlaceholder": "Enter your email",
+      "password": "Password",
+      "passwordPlaceholder": "Enter your password",
+      "confirmPassword": "Confirm Password",
+      "confirmPasswordPlaceholder": "Re-enter your password",
+      "submit": "Sign up",
+      "haveAccount": "Already have an account?",
+      "login": "Login",
+      "error": {
+        "general": "Failed to create account. Please try again.",
+        "nameRequired": "Name is required",
+        "nameLength": "Name must be at least 2 characters",
+        "emailRequired": "Email is required",
+        "emailInvalid": "Invalid email address",
+        "passwordRequired": "Password is required",
+        "passwordLength": "Password must be at least 8 characters",
+        "passwordsDoNotMatch": "Passwords don't match"
+      }
+    },
+    "logout": {
+      "title": "Logout",
+      "confirm": "Are you sure you want to logout?",
+      "success": "Successfully logged out",
+      "cancel": "Cancel"
+    }
+  }
+} 

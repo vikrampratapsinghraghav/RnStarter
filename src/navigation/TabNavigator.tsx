@@ -2,7 +2,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useTheme } from '../theme/ThemeContext';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '../localization/useTranslation';
 import { TabParamList } from './types';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
 import { TouchableOpacity, I18nManager, StyleSheet } from 'react-native';
@@ -34,13 +34,13 @@ export const TabNavigator = () => {
     <Tab.Navigator
       screenOptions={{
         tabBarStyle: {
-          backgroundColor: theme.background.primary,
-          borderTopColor: theme.background.tertiary,
+          backgroundColor: theme.background.default,
+          borderTopColor: theme.background.elevated,
         },
-        tabBarActiveTintColor: theme.colors.primary,
+        tabBarActiveTintColor: theme.primary.main,
         tabBarInactiveTintColor: theme.text.secondary,
         headerStyle: {
-          backgroundColor: theme.background.primary,
+          backgroundColor: theme.background.default,
         },
         headerTintColor: theme.text.primary,
         headerLeft: I18nManager.isRTL ? undefined : () => <DrawerButton />,

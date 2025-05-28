@@ -5,23 +5,68 @@ export interface Theme {
   isDark: boolean;
   isRTL: boolean;
   background: {
-    primary: string;
-    secondary: string;
-    tertiary: string;
+    default: string;
+    paper: string;
+    elevated: string;
   };
   text: {
     primary: string;
     secondary: string;
-    tertiary: string;
+    disabled: string;
     inverse: string;
   };
-  colors: {
-    primary: string;
-    secondary: string;
-    success: string;
-    warning: string;
-    error: string;
-    info: string;
+  primary: {
+    main: string;
+    light: string;
+    dark: string;
+    contrastText: string;
+  };
+  secondary: {
+    main: string;
+    light: string;
+    dark: string;
+    contrastText: string;
+  };
+  error: {
+    main: string;
+    light: string;
+    dark: string;
+    contrastText: string;
+  };
+  warning: {
+    main: string;
+    light: string;
+    dark: string;
+    contrastText: string;
+  };
+  success: {
+    main: string;
+    light: string;
+    dark: string;
+    contrastText: string;
+  };
+  typography: {
+    fontFamily: {
+      regular: string;
+      medium: string;
+      bold: string;
+    };
+    fontSize: {
+      xs: number;
+      sm: number;
+      md: number;
+      lg: number;
+      xl: number;
+      xxl: number;
+      xxxl: number;
+    };
+  };
+  spacing: {
+    xs: number;
+    sm: number;
+    md: number;
+    lg: number;
+    xl: number;
   };
 }
 
@@ -29,23 +74,68 @@ const lightTheme: Theme = {
   isDark: false,
   isRTL: I18nManager.isRTL,
   background: {
-    primary: '#FFFFFF',
-    secondary: '#F5F5F5',
-    tertiary: '#E0E0E0',
+    default: '#FFFFFF',
+    paper: '#F5F5F5',
+    elevated: '#E0E0E0',
   },
   text: {
     primary: '#000000',
     secondary: '#666666',
-    tertiary: '#999999',
+    disabled: '#999999',
     inverse: '#FFFFFF',
   },
-  colors: {
-    primary: '#007AFF',
-    secondary: '#5856D6',
-    success: '#34C759',
-    warning: '#FF9500',
-    error: '#FF3B30',
-    info: '#5856D6',
+  primary: {
+    main: '#007AFF',
+    light: '#4DA3FF',
+    dark: '#0055B3',
+    contrastText: '#FFFFFF',
+  },
+  secondary: {
+    main: '#5856D6',
+    light: '#7A79E0',
+    dark: '#3E3D94',
+    contrastText: '#FFFFFF',
+  },
+  success: {
+    main: '#34C759',
+    light: '#5FD37E',
+    dark: '#248F40',
+    contrastText: '#FFFFFF',
+  },
+  warning: {
+    main: '#FF9500',
+    light: '#FFAA33',
+    dark: '#CC7700',
+    contrastText: '#000000',
+  },
+  error: {
+    main: '#FF3B30',
+    light: '#FF6961',
+    dark: '#CC2F26',
+    contrastText: '#FFFFFF',
+  },
+  typography: {
+    fontFamily: {
+      regular: 'System',
+      medium: 'System',
+      bold: 'System',
+    },
+    fontSize: {
+      xs: 12,
+      sm: 14,
+      md: 16,
+      lg: 18,
+      xl: 20,
+      xxl: 24,
+      xxxl: 32,
+    },
+  },
+  spacing: {
+    xs: 4,
+    sm: 8,
+    md: 16,
+    lg: 24,
+    xl: 32,
   },
 };
 
@@ -53,14 +143,14 @@ const darkTheme: Theme = {
   ...lightTheme,
   isDark: true,
   background: {
-    primary: '#000000',
-    secondary: '#1C1C1E',
-    tertiary: '#2C2C2E',
+    default: '#000000',
+    paper: '#1C1C1E',
+    elevated: '#2C2C2E',
   },
   text: {
     primary: '#FFFFFF',
     secondary: '#EBEBF5',
-    tertiary: '#EBEBF599',
+    disabled: '#EBEBF599',
     inverse: '#000000',
   },
 };
