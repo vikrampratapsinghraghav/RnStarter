@@ -225,7 +225,7 @@ If this project saved you hours of setup time, consider supporting me:
 
 - ☕ [Buy Me a Coffee](https://buymeacoffee.com/vikrampratap)
 - 💬 [Message me on LinkedIn](https://www.linkedin.com/in/vikramps98)
-- 📦 [Download the advanced version on Gumroad](https://gumroad.com/vikramps98)
+- 📦 [Download the advanced version on Gumroad](https://vikrampratap.gumroad.com)
 
 Need customizations or features? [Open an issue](https://github.com/vikrampratapsinghraghav/RnStarter/issues) or contact me directly.
 
