@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { useTheme } from '@theme/ThemeContext';
 
-const ThemeSettingsScreen = () => {
+export const ThemeSettingsScreen = () => {
   const { theme, themeMode, themeVariant, setThemeMode, setThemeVariant } = useTheme();
 
   const themeModes = [
@@ -222,5 +222,3 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
   },
 });
-
-export default ThemeSettingsScreen;
