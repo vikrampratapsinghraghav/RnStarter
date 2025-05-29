@@ -1,11 +1,11 @@
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { useTheme } from '../theme/ThemeContext';
-import { useLanguage } from '../localization/LanguageContext';
-import { useTranslation } from '../localization/useTranslation';
+import { useTheme } from '@/theme/ThemeContext';
+import { useLanguage } from '@/localization/LanguageContext';
+import { useTranslation } from '@/localization/useTranslation';
 import { I18nManager } from 'react-native';
-import { Text } from '../components/common';
+import { Text } from '@/components/common';
 
 export const LanguageSettingsScreen = () => {
   const { theme } = useTheme();

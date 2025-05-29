@@ -1,11 +1,11 @@
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { useTheme } from '../theme/ThemeContext';
-import { useTranslation } from '../localization/useTranslation';
-import { Text } from '../components/common';
+import { useTheme } from '@/theme/ThemeContext';
+import { useTranslation } from '@/localization/useTranslation';
+import { Text } from '@/components/common';
 import { useNavigation } from '@react-navigation/native';
-import { SettingsStackNavigationProp } from '../navigation/types';
+import { SettingsStackNavigationProp } from '@/navigation/types';
 
 export const SettingsScreen = () => {
   const { theme } = useTheme();
