@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, TextInput, ActivityIndicator, Text, FlatList, StyleSheet } from 'react-native';
-import { useApi } from '../hooks/useApi';
-import { useDebounce } from '../hooks/useDebounce';
+import { useApi } from '@hooks/useApi';
+import { useDebounce } from '@hooks/useDebounce';
 
 interface Post {
   id: number;
