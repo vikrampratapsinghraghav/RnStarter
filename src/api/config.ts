@@ -1,4 +1,6 @@
-export const API_BASE_URL = 'https://jsonplaceholder.typicode.com';
+import { API_BASE_URL as BASE_URL } from '@env';
+
+export const API_BASE_URL = BASE_URL;
 
 export const DEFAULT_HEADERS = {
   'Content-Type': 'application/json',

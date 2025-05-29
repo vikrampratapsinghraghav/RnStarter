@@ -51,6 +51,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // TODO: Implement actual login API call
       await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
       
+      // Store user data
+      const userData = {
+        email: data.email,
+        name: data.email.split('@')[0], // Use email username as name for login
+      };
+      await storage.setItem('user', userData);
+      
       // Store auth state
       await storage.setIsAuthenticated(true);
       // You would typically also store the token here
@@ -70,6 +77,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       // TODO: Implement actual signup API call
       await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
+      
+      // Store user data
+      const userData = {
+        email: data.email,
+        name: data.name,
+      };
+      await storage.setItem('user', userData);
       
       // Store auth state
       await storage.setIsAuthenticated(true);
