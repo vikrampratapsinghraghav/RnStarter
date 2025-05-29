@@ -36,10 +36,7 @@ export type HomeStackParamList = {
   Details: { id: string };
 };
 
-export type DiscoverStackParamList = {
-  DiscoverScreen: undefined;
-  CategoryDetails: { category: string };
-};
+
 
 export type ProfileStackParamList = {
   ProfileScreen: undefined;

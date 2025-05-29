@@ -2,11 +2,10 @@ import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { AuthNavigator } from '@screens/auth/navigation/AuthNavigator';
 import { useAuth } from '@screens/auth/context/AuthContext';
-import AppNavigator from './AppNavigator';
 import { DrawerNavigator } from './DrawerNavigator';
 
 // Import your app's main navigator (replace with your actual main navigator)
-// import { AppNavigator } from './AppNavigator';
+
 
 export type RootStackParamList = {
   Auth: undefined;
