@@ -8,12 +8,13 @@ export type TabParamList = {
 };
 
 export type DrawerParamList = {
-  MainTabs: NavigatorScreenParams<TabParamList>;
-  ThemeSettings: undefined;
+  MainTabs: undefined;
   LanguageSettings: undefined;
 };
 
 export type RootStackParamList = {
+  Auth: undefined;
+  MainTabs: NavigatorScreenParams<TabParamList>;
   Drawer: NavigatorScreenParams<DrawerParamList>;
 };
 
@@ -35,10 +36,7 @@ export type HomeStackParamList = {
   Details: { id: string };
 };
 
-export type DiscoverStackParamList = {
-  DiscoverScreen: undefined;
-  CategoryDetails: { category: string };
-};
+
 
 export type ProfileStackParamList = {
   ProfileScreen: undefined;
@@ -53,6 +51,11 @@ export type BottomTabParamList = {
 };
 
 export type SettingsStackNavigationProp = NativeStackNavigationProp<DrawerParamList>;
+
+export type AuthStackParamList = {
+  Login: undefined;
+  Signup: undefined;
+};
 
 declare global {
   namespace ReactNavigation {

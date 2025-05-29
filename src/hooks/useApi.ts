@@ -1,100 +1,35 @@
-import { useState, useCallback, useEffect } from 'react';
-import { AppError, handleApiError, logError } from '../utils/errorHandler';
+import { useState, useCallback } from 'react';
 
-interface ApiState<T> {
+interface UseApiResponse<T> {
   data: T | null;
   loading: boolean;
   error: string | null;
+  execute: (...args: any[]) => Promise<void>;
 }
 
-interface CacheItem<T> {
-  data: T;
-  timestamp: number;
-}
+/**
+ * A hook for handling API calls with loading and error states.
+ * 
+ * @param apiFunc The API function to call
+ * @returns Object containing data, loading state, error state, and execute function
+ */
+export function useApi<T>(apiFunc: (...args: any[]) => Promise<T>): UseApiResponse<T> {
+  const [data, setData] = useState<T | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-const cache = new Map<string, CacheItem<any>>();
-const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
-
-interface UseApiOptions {
-  cacheKey?: string;
-  cacheDuration?: number;
-  enabled?: boolean;
-}
-
-export function useApi<T>(
-  apiFunction: () => Promise<T>,
-  options: UseApiOptions = {},
-): ApiState<T> & {
-  refetch: () => Promise<void>;
-  clearCache: () => void;
-} {
-  const { cacheKey, cacheDuration = CACHE_DURATION, enabled = true } = options;
-
-  const [state, setState] = useState<ApiState<T>>({
-    data: null,
-    loading: false,
-    error: null,
-  });
-
-  const clearCache = useCallback(() => {
-    if (cacheKey) {
-      cache.delete(cacheKey);
-    }
-  }, [cacheKey]);
-
-  const fetchData = useCallback(async () => {
-    // Check cache first
-    if (cacheKey) {
-      const cachedItem = cache.get(cacheKey);
-      if (cachedItem && Date.now() - cachedItem.timestamp < cacheDuration) {
-        setState({
-          data: cachedItem.data,
-          loading: false,
-          error: null,
-        });
-        return;
-      }
-    }
-
-    setState(prev => ({ ...prev, loading: true, error: null }));
-
+  const execute = useCallback(async (...args: any[]) => {
     try {
-      const result = await apiFunction();
-
-      // Update cache
-      if (cacheKey) {
-        cache.set(cacheKey, {
-          data: result,
-          timestamp: Date.now(),
-        });
-      }
-
-      setState({
-        data: result,
-        loading: false,
-        error: null,
-      });
-    } catch (error) {
-      const errorDetails = handleApiError(error);
-      logError(error instanceof AppError ? error : new Error(errorDetails.message));
-
-      setState({
-        data: null,
-        loading: false,
-        error: errorDetails.message,
-      });
+      setLoading(true);
+      setError(null);
+      const result = await apiFunc(...args);
+      setData(result);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred');
+    } finally {
+      setLoading(false);
     }
-  }, [apiFunction, cacheKey, cacheDuration]);
+  }, [apiFunc]);
 
-  useEffect(() => {
-    if (enabled) {
-      fetchData();
-    }
-  }, [enabled, fetchData]);
-
-  return {
-    ...state,
-    refetch: fetchData,
-    clearCache,
-  };
+  return { data, loading, error, execute };
 }

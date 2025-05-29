@@ -3,14 +3,12 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useTheme } from '@theme/ThemeContext';
 import { useTranslation } from '@localization/useTranslation';
+import { HomeScreen } from '@screens/home/HomeScreen';
+import { ProfileScreen } from '@screens/ProfileScreen';
+import { SettingsScreen } from '@screens/settings/SettingsScreen';
 import { TabParamList } from './types';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
 import { TouchableOpacity, I18nManager, StyleSheet } from 'react-native';
-
-// Import screens
-import { HomeScreen } from '@screens/HomeScreen';
-import { ProfileScreen } from '@screens/ProfileScreen';
-import { SettingsScreen } from '@screens/settings/SettingsScreen';
 
 const Tab = createBottomTabNavigator<TabParamList>();
 
