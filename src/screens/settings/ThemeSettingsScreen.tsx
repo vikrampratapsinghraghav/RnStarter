@@ -1,66 +1,142 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  Pressable,
+} from 'react-native';
 import { useTheme } from '@theme/ThemeContext';
-import { useTranslation } from '@localization/useTranslation';
-import { Text } from '@components/common';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-export const ThemeSettingsScreen = () => {
-  const { theme, themeMode, setThemeMode } = useTheme();
-  const { t } = useTranslation();
+const ThemeSettingsScreen = () => {
+  const { theme, themeMode, themeVariant, setThemeMode, setThemeVariant } = useTheme();
 
-  const ThemeOption = ({
-    mode,
-    icon,
-    label,
-  }: {
-    mode: 'light' | 'dark' | 'system';
-    icon: string;
-    label: string;
-  }) => (
-    <TouchableOpacity
+  const themeModes = [
+    { label: 'Light', value: 'light' },
+    { label: 'Dark', value: 'dark' },
+    { label: 'System', value: 'system' },
+  ];
+
+  const themeVariants = [
+    { label: 'Default', value: 'default', description: 'Classic blue theme with modern aesthetics' },
+    { label: 'Nature', value: 'nature', description: 'Earthy green theme inspired by nature' },
+    { label: 'Ocean', value: 'ocean', description: 'Calming blue theme inspired by the ocean' },
+  ];
+
+  const RadioButton = ({ selected, onPress }: { selected: boolean; onPress: () => void }) => (
+    <Pressable
+      onPress={onPress}
       style={[
-        styles.themeOption,
+        styles.radio,
         {
+          borderColor: theme.primary.main,
           backgroundColor: theme.background.paper,
-          borderColor: themeMode === mode ? theme.primary.main : 'transparent',
         },
       ]}
-      onPress={() => setThemeMode(mode)}>
-      <Icon
-        name={icon}
-        size={24}
-        color={themeMode === mode ? theme.primary.main : theme.text.primary}
-      />
-      <Text
-        variant="body1"
-        style={[
-          styles.themeLabel,
-          { color: themeMode === mode ? theme.primary.main : theme.text.primary },
-        ]}>
-        {label}
-      </Text>
-      {themeMode === mode && (
-        <Icon name="check" size={20} color={theme.primary.main} style={styles.checkIcon} />
+    >
+      {selected && (
+        <View
+          style={[
+            styles.radioInner,
+            {
+              backgroundColor: theme.primary.main,
+            },
+          ]}
+        />
       )}
-    </TouchableOpacity>
+    </Pressable>
   );
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.background.default }]}>
-      <Text variant="h3" style={[styles.title, { color: theme.text.primary }]}>
-        {t('settings.theme.title')}
-      </Text>
-      <Text variant="body1" style={[styles.description, { color: theme.text.secondary }]}>
-        {t('settings.theme.description')}
+    <ScrollView style={[styles.container, { backgroundColor: theme.background.default }]}>
+      <Text style={[styles.title, { color: theme.text.primary }]}>
+        Theme Settings
       </Text>
 
-      <View style={styles.optionsContainer}>
-        <ThemeOption mode="light" icon="white-balance-sunny" label={t('theme.light')} />
-        <ThemeOption mode="dark" icon="moon-waning-crescent" label={t('theme.dark')} />
-        <ThemeOption mode="system" icon="theme-light-dark" label={t('theme.system')} />
+      <View style={[styles.card, { backgroundColor: theme.background.paper }]}>
+        <Text style={[styles.sectionTitle, { color: theme.text.primary }]}>
+          Theme Mode
+        </Text>
+        <View style={styles.optionsContainer}>
+          {themeModes.map(mode => (
+            <TouchableOpacity
+              key={mode.value}
+              style={styles.optionRow}
+              onPress={() => setThemeMode(mode.value as 'light' | 'dark' | 'system')}
+            >
+              <RadioButton
+                selected={themeMode === mode.value}
+                onPress={() => setThemeMode(mode.value as 'light' | 'dark' | 'system')}
+              />
+              <Text style={[styles.optionLabel, { color: theme.text.primary }]}>
+                {mode.label}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </View>
       </View>
-    </View>
+
+      <View style={styles.spacing} />
+
+      <View style={[styles.card, { backgroundColor: theme.background.paper }]}>
+        <Text style={[styles.sectionTitle, { color: theme.text.primary }]}>
+          Theme Variant
+        </Text>
+        <View style={styles.optionsContainer}>
+          {themeVariants.map(variant => (
+            <TouchableOpacity
+              key={variant.value}
+              style={styles.optionRow}
+              onPress={() => setThemeVariant(variant.value as 'default' | 'nature' | 'ocean')}
+            >
+              <RadioButton
+                selected={themeVariant === variant.value}
+                onPress={() => setThemeVariant(variant.value as 'default' | 'nature' | 'ocean')}
+              />
+              <View style={styles.variantTextContainer}>
+                <Text style={[styles.optionLabel, { color: theme.text.primary }]}>
+                  {variant.label}
+                </Text>
+                <Text style={[styles.optionDescription, { color: theme.text.secondary }]}>
+                  {variant.description}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          ))}
+        </View>
+      </View>
+
+      <View style={styles.spacing} />
+
+      <View style={[styles.card, { backgroundColor: theme.background.paper }]}>
+        <Text style={[styles.sectionTitle, { color: theme.text.primary }]}>
+          Preview
+        </Text>
+        <View style={styles.previewContainer}>
+          <View
+            style={[
+              styles.colorPreview,
+              { backgroundColor: theme.primary.main },
+            ]}
+          >
+            <Text style={styles.previewText}>
+              Primary
+            </Text>
+          </View>
+          <View
+            style={[
+              styles.colorPreview,
+              { backgroundColor: theme.secondary.main },
+            ]}
+          >
+            <Text style={styles.previewText}>
+              Secondary
+            </Text>
+          </View>
+        </View>
+      </View>
+    </ScrollView>
   );
 };
 
@@ -70,26 +146,81 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   title: {
-    marginBottom: 8,
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 16,
   },
-  description: {
-    marginBottom: 24,
+  card: {
+    borderRadius: 12,
+    padding: 16,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    marginBottom: 16,
+  },
+  spacing: {
+    height: 16,
   },
   optionsContainer: {
     gap: 12,
   },
-  themeOption: {
+  optionRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 16,
+    paddingVertical: 8,
+  },
+  optionLabel: {
+    fontSize: 16,
+    marginLeft: 12,
+  },
+  optionDescription: {
+    fontSize: 14,
+    marginTop: 2,
+  },
+  variantTextContainer: {
+    flex: 1,
+    marginLeft: 12,
+  },
+  radio: {
+    width: 24,
+    height: 24,
     borderRadius: 12,
     borderWidth: 2,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  themeLabel: {
-    marginLeft: 12,
+  radioInner: {
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+  },
+  previewContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 8,
+  },
+  colorPreview: {
     flex: 1,
+    height: 100,
+    marginHorizontal: 4,
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  checkIcon: {
-    marginLeft: 8,
+  previewText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#FFFFFF',
   },
 });
+
+export default ThemeSettingsScreen;
