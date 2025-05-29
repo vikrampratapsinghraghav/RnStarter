@@ -2,18 +2,13 @@ import React, { useState, useMemo } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useTheme } from '@theme/ThemeContext';
 import { useTranslation } from '@localization/useTranslation';
-<<<<<<< HEAD
 import { useAuth } from '@screens/auth/context/AuthContext';
-import { PostList } from '@components/posts';
-=======
-import { useAuth } from '../auth/context/AuthContext';
 import { PostList, SearchPosts } from '@components/posts';
 import { useSelector } from 'react-redux';
 import { RootState } from '@store/types';
 import { selectFilteredAndSortedPosts } from '@store/slices/postsSlice';
 import { useDebounce } from '@hooks/useDebounce';
 import { Text } from '@components/common';
->>>>>>> feature/search-integration
 
 export const HomeScreen = () => {
   const { theme } = useTheme();
@@ -56,16 +51,12 @@ export const HomeScreen = () => {
 
   return (
     <View style={[styles.container, { backgroundColor: theme.background.default }]}>
-<<<<<<< HEAD
-      <PostList />
-=======
       <SearchPosts 
         value={searchTerm}
         onChangeText={setSearchTerm}
       />
       <View style={styles.divider} />
       {debouncedSearchTerm ? renderSearchResults() : <PostList />}
->>>>>>> feature/search-integration
     </View>
   );
 };
