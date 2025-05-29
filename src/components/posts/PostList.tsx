@@ -1,46 +1,36 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { View, FlatList, StyleSheet, ActivityIndicator, RefreshControl } from 'react-native';
 import { Text } from '@components/common';
 import { useTheme } from '@theme/ThemeContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@store/types';
+import { fetchPosts, selectFilteredAndSortedPosts } from '@store/slices/postsSlice';
+import { Post } from '@api/types';
 
-interface Post {
-  id: number;
-  title: string;
-  body: string;
+interface PostListProps {
+  posts?: Post[];
 }
 
-export const PostList = () => {
+export const PostList: React.FC<PostListProps> = ({ posts: propPosts }) => {
   const { theme } = useTheme();
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const dispatch = useDispatch<AppDispatch>();
+  const storePosts = useSelector((state: RootState) => selectFilteredAndSortedPosts(state));
+  const [refreshing, setRefreshing] = React.useState(false);
 
-  const fetchPosts = async () => {
-    try {
-      const response = await fetch('https://jsonplaceholder.typicode.com/posts');
-      if (!response.ok) {
-        throw new Error('Failed to fetch posts');
-      }
-      const data = await response.json();
-      setPosts(data);
-      setError(null);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
-    } finally {
-      setLoading(false);
-      setRefreshing(false);
-    }
-  };
+  const posts = propPosts || storePosts;
 
-  useEffect(() => {
-    fetchPosts();
-  }, []);
-
-  const onRefresh = () => {
+  const onRefresh = React.useCallback(() => {
+    if (propPosts) return; // Don't refresh if using provided posts
     setRefreshing(true);
-    fetchPosts();
-  };
+    dispatch(fetchPosts())
+      .finally(() => setRefreshing(false));
+  }, [dispatch, propPosts]);
+
+  React.useEffect(() => {
+    if (!propPosts) {
+      dispatch(fetchPosts());
+    }
+  }, [dispatch, propPosts]);
 
   const renderPost = ({ item }: { item: Post }) => (
     <View style={[styles.postContainer, { backgroundColor: theme.background.paper }]}>
@@ -59,22 +49,6 @@ export const PostList = () => {
     </View>
   );
 
-  if (loading) {
-    return (
-      <View style={[styles.centerContainer, { backgroundColor: theme.background.default }]}>
-        <ActivityIndicator size="large" color={theme.primary.main} />
-      </View>
-    );
-  }
-
-  if (error) {
-    return (
-      <View style={[styles.centerContainer, { backgroundColor: theme.background.default }]}>
-        <Text style={{ color: theme.error.main }}>{error}</Text>
-      </View>
-    );
-  }
-
   return (
     <FlatList
       data={posts}
@@ -83,23 +57,20 @@ export const PostList = () => {
       contentContainerStyle={[styles.listContainer, { backgroundColor: theme.background.default }]}
       ItemSeparatorComponent={() => <View style={styles.separator} />}
       refreshControl={
-        <RefreshControl
-          refreshing={refreshing}
-          onRefresh={onRefresh}
-          colors={[theme.primary.main]}
-          tintColor={theme.primary.main}
-        />
+        propPosts ? undefined : (
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            colors={[theme.primary.main]}
+            tintColor={theme.primary.main}
+          />
+        )
       }
     />
   );
 };
 
 const styles = StyleSheet.create({
-  centerContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   listContainer: {
     padding: 16,
   },
