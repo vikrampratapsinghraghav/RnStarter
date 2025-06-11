@@ -33,13 +33,17 @@ const initialState: PostsState = {
   },
 };
 
-export const fetchPosts = createAsyncThunk('posts/fetchPosts', async (_, { rejectWithValue }) => {
-  try {
-    return await postsApi.getAllPosts();
-  } catch (error) {
-    return rejectWithValue(error instanceof Error ? error.message : 'Failed to fetch posts');
+// Async Thunks
+export const fetchPosts = createAsyncThunk(
+  'posts/fetchPosts',
+  async (_, { rejectWithValue }) => {
+    try {
+      return await postsApi.getAllPosts();
+    } catch (error) {
+      return rejectWithValue(error instanceof Error ? error.message : 'Failed to fetch posts');
+    }
   }
-});
+);
 
 export const createPost = createAsyncThunk(
   'posts/createPost',
@@ -49,7 +53,7 @@ export const createPost = createAsyncThunk(
     } catch (error) {
       return rejectWithValue(error instanceof Error ? error.message : 'Failed to create post');
     }
-  },
+  }
 );
 
 export const updatePost = createAsyncThunk(
@@ -60,7 +64,7 @@ export const updatePost = createAsyncThunk(
     } catch (error) {
       return rejectWithValue(error instanceof Error ? error.message : 'Failed to update post');
     }
-  },
+  }
 );
 
 export const deletePost = createAsyncThunk(
@@ -72,10 +76,9 @@ export const deletePost = createAsyncThunk(
     } catch (error) {
       return rejectWithValue(error instanceof Error ? error.message : 'Failed to delete post');
     }
-  },
+  }
 );
 
-// New async thunk for paginated fetch
 export const fetchPaginatedPosts = createAsyncThunk(
   'posts/fetchPaginatedPosts',
   async ({ page, limit }: { page: number; limit: number }, { rejectWithValue }) => {
@@ -88,7 +91,7 @@ export const fetchPaginatedPosts = createAsyncThunk(
     } catch (error) {
       return rejectWithValue(error instanceof Error ? error.message : 'Failed to fetch posts');
     }
-  },
+  }
 );
 
 const postsSlice = createSlice({
@@ -121,10 +124,10 @@ const postsSlice = createSlice({
       state.pagination.currentPage = 1; // Reset to first page when changing items per page
     },
   },
-  extraReducers: builder => {
+  extraReducers: (builder) => {
     builder
       // Fetch posts
-      .addCase(fetchPosts.pending, state => {
+      .addCase(fetchPosts.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
@@ -151,19 +154,16 @@ const postsSlice = createSlice({
       .addCase(deletePost.fulfilled, (state, action: PayloadAction<number>) => {
         state.items = state.items.filter(post => post.id !== action.payload);
       })
-      // Paginated fetch cases
-      .addCase(fetchPaginatedPosts.pending, state => {
+      // Paginated fetch
+      .addCase(fetchPaginatedPosts.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(
-        fetchPaginatedPosts.fulfilled,
-        (state, action: PayloadAction<{ posts: Post[]; total: number }>) => {
-          state.loading = false;
-          state.items = action.payload.posts;
-          state.pagination.totalItems = action.payload.total;
-        },
-      )
+      .addCase(fetchPaginatedPosts.fulfilled, (state, action: PayloadAction<{ posts: Post[]; total: number }>) => {
+        state.loading = false;
+        state.items = action.payload.posts;
+        state.pagination.totalItems = action.payload.total;
+      })
       .addCase(fetchPaginatedPosts.rejected, (state, action) => {
         state.loading = false;
         state.error = (action.payload as string) || 'Something went wrong';
@@ -171,10 +171,23 @@ const postsSlice = createSlice({
   },
 });
 
-export const { setFilter, setSortBy, setSortOrder, toggleFavorite, setPage, setItemsPerPage } =
-  postsSlice.actions;
+// Export actions
+export const {
+  setFilter,
+  setSortBy,
+  setSortOrder,
+  toggleFavorite,
+  setPage,
+  setItemsPerPage,
+} = postsSlice.actions;
 
 // Selectors
+export const selectPosts = (state: { posts: PostsState }) => state.posts.items;
+export const selectFilter = (state: { posts: PostsState }) => state.posts.filter;
+export const selectSortBy = (state: { posts: PostsState }) => state.posts.sortBy;
+export const selectSortOrder = (state: { posts: PostsState }) => state.posts.sortOrder;
+export const selectFavorites = (state: { posts: PostsState }) => state.posts.favorites;
+
 export const selectFilteredAndSortedPosts = (state: { posts: PostsState }) => {
   const { items, filter, sortBy, sortOrder } = state.posts;
 
