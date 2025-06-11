@@ -24,12 +24,65 @@ export const useAuth = () => {
 };
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  // 1. All useState hooks first
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
-  const { t } = useTranslation();
 
-  // Initialize auth state from storage
+  // 2. Memoize translation function to maintain hooks order
+  const { t } = useTranslation();
+  const translatedInitMessage = React.useMemo(() => t('auth.initializing') as string, [t]);
+
+  // 3. useCallback hooks
+  const login = useCallback(async (data: LoginFormData) => {
+    setIsLoading(true);
+    try {
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      const userData = {
+        email: data.email,
+        name: data.email.split('@')[0],
+      };
+      await storage.setItem('user', userData);
+      await storage.setIsAuthenticated(true);
+      setIsAuthenticated(true);
+    } catch (error) {
+      console.error('Login error:', error);
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  const signup = useCallback(async (data: SignupFormData) => {
+    setIsLoading(true);
+    try {
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      const userData = {
+        email: data.email,
+        name: data.name,
+      };
+      await storage.setItem('user', userData);
+      await storage.setIsAuthenticated(true);
+      setIsAuthenticated(true);
+    } catch (error) {
+      console.error('Signup error:', error);
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  const logout = useCallback(async () => {
+    try {
+      await storage.clearAuth();
+      setIsAuthenticated(false);
+    } catch (error) {
+      console.error('Logout error:', error);
+      throw error;
+    }
+  }, []);
+
+  // 4. useEffect hooks last
   useEffect(() => {
     const initializeAuth = async () => {
       try {
@@ -45,74 +98,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     initializeAuth();
   }, []);
 
-  const login = useCallback(async (data: LoginFormData) => {
-    setIsLoading(true);
-    try {
-      // TODO: Implement actual login API call
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
-      
-      // Store user data
-      const userData = {
-        email: data.email,
-        name: data.email.split('@')[0], // Use email username as name for login
-      };
-      await storage.setItem('user', userData);
-      
-      // Store auth state
-      await storage.setIsAuthenticated(true);
-      // You would typically also store the token here
-      // await storage.setAuthToken(response.token);
-      
-      setIsAuthenticated(true);
-    } catch (error) {
-      console.error('Login error:', error);
-      throw error;
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
-  const signup = useCallback(async (data: SignupFormData) => {
-    setIsLoading(true);
-    try {
-      // TODO: Implement actual signup API call
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
-      
-      // Store user data
-      const userData = {
-        email: data.email,
-        name: data.name,
-      };
-      await storage.setItem('user', userData);
-      
-      // Store auth state
-      await storage.setIsAuthenticated(true);
-      // You would typically also store the token here
-      // await storage.setAuthToken(response.token);
-      
-      setIsAuthenticated(true);
-    } catch (error) {
-      console.error('Signup error:', error);
-      throw error;
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
-  const logout = useCallback(async () => {
-    try {
-      // Clear all auth data from storage
-      await storage.clearAuth();
-      setIsAuthenticated(false);
-    } catch (error) {
-      console.error('Logout error:', error);
-      throw error;
-    }
-  }, []);
-
-  // Don't render children until auth is initialized
   if (!isInitialized) {
-    return <LoadingScreen message={t('auth.initializing')} />;
+    return <LoadingScreen message={translatedInitMessage} />;
   }
 
   return (

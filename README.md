@@ -81,6 +81,21 @@ A feature-rich React Native starter template with TypeScript support, built-in n
   - Safe function execution wrapper
   - Error logging with device info
 
+### 8. Form Handling
+- React Hook Form integration
+- Zod schema validation
+- Type-safe form handling
+- Built-in form validation
+- Custom form components
+
+## 📋 Prerequisites
+
+- Node.js >= 18
+- React Native 0.79.2
+- Xcode (for iOS development)
+- Android Studio (for Android development)
+- CocoaPods (for iOS dependencies)
+
 ## 📦 Project Structure
 
 ```
@@ -91,6 +106,8 @@ src/
 │   └── types.ts         # API types
 ├── components/          # Reusable components
 │   └── common/         # Common components
+├── config/             # App configuration
+│   └── env/           # Environment configurations
 ├── hooks/              # Custom hooks
 │   ├── useApi.ts      # API handling hook
 │   └── useDebounce.ts # Debounce hook
@@ -115,7 +132,7 @@ src/
 
 1. Clone the repository
 ```bash
-git clone [repository-url]
+git clone https://github.com/vikrampratapsinghraghav/RnStarter
 ```
 
 2. Install dependencies
@@ -128,7 +145,19 @@ yarn install
 cd ios && pod install
 ```
 
-4. Run the app
+4. Choose environment (optional)
+```bash
+# Development environment
+yarn env:dev
+
+# Staging environment
+yarn env:staging
+
+# Production environment
+yarn env:prod
+```
+
+5. Run the app
 ```bash
 # iOS
 yarn ios
@@ -139,15 +168,52 @@ yarn android
 
 ## 🔧 Dependencies
 
-- React Navigation
+### Core Dependencies
+- React Native v0.79.2
+- React Navigation v7
 - Redux Toolkit
 - React Redux
-- i18next
+- i18next & react-i18next
 - React Native Localize
 - AsyncStorage
 - React Native Vector Icons
-- ESLint + Prettier for code quality
-- [Other dependencies...]
+- React Hook Form
+- Zod
+
+### Development Dependencies
+- TypeScript
+- ESLint
+- Prettier
+- Jest
+- React Native Dotenv
+- Babel Plugin Module Resolver
+
+## Available Scripts
+
+```bash
+# Start the app
+yarn start
+
+# Run on specific platform
+yarn ios
+yarn android
+
+# Linting
+yarn lint
+yarn lint:fix
+
+# Formatting
+yarn format
+yarn format:check
+
+# Environment switching
+yarn env:dev
+yarn env:staging
+yarn env:prod
+
+# Testing
+yarn test
+```
 
 ## 🎨 Theme Customization
 
@@ -225,22 +291,61 @@ If this project saved you hours of setup time, consider supporting me:
 
 - ☕ [Buy Me a Coffee](https://buymeacoffee.com/vikrampratap)
 - 💬 [Message me on LinkedIn](https://www.linkedin.com/in/vikramps98)
-- 📦 [Download the advanced version on Gumroad](https://vikrampratap.gumroad.com)
+
 
 Need customizations or features? [Open an issue](https://github.com/vikrampratapsinghraghav/RnStarter/issues) or contact me directly.
 
+## 🔐 Environment Configuration
+
+The project uses `.env` files for environment-specific configuration. Create the following files in your project root:
+
+- `.env.development` - Development environment variables
+- `.env.staging` - Staging environment variables
+- `.env.production` - Production environment variables
+
+Example `.env` file structure:
+```env
+API_URL=https://api.example.com
+API_KEY=your_api_key
+```
+
+Note: Never commit your actual `.env` files to version control. Use `.env.example` as a template.
+
 ---
 Made with ❤️ by [Vikram Pratap Singh Raghav](https://github.com/vikrampratapsinghraghav)
+
+This starter template is maintained by [Vikram Pratap Singh Raghav](https://github.com/vikrampratapsinghraghav).
 
 ## 💅 Code Quality Tools
 
 ### ESLint
 
-The project uses ESLint for code linting with the following configurations:
-- TypeScript support
+The project uses a comprehensive ESLint setup with the following configurations:
+
+```javascript
+{
+  extends: [
+    '@react-native',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:react/recommended',
+    'plugin:react-hooks/recommended',
+    'plugin:react-native/all',
+    'prettier',
+  ]
+}
+```
+
+Key Features:
+- TypeScript-aware linting with `@typescript-eslint`
 - React and React Native specific rules
-- Hooks rules
+- React Hooks rules enforcement
 - Prettier integration
+- Custom rules for better code quality:
+  - No inline styles (warning)
+  - No color literals (warning)
+  - No console logs (except warn and error)
+  - Unused variables detection
+  - And more...
 
 Available commands:
 ```bash
@@ -268,6 +373,50 @@ yarn format
 # Check if files are formatted
 yarn format:check
 ```
+
+## 🎨 Vector Icons Setup
+
+The project includes [React Native Vector Icons](https://github.com/oblador/react-native-vector-icons) with full setup for both iOS and Android.
+
+### Available Icon Families
+- MaterialIcons
+- FontAwesome
+- Ionicons
+- AntDesign
+- And many more...
+
+### Usage Example
+```typescript
+import Icon from 'react-native-vector-icons/MaterialIcons';
+
+// In your component
+<Icon name="home" size={24} color={theme.colors.primary} />
+```
+
+### iOS Setup
+The necessary font files are already linked in the Xcode project. If you need to add more icon families:
+
+1. Add this to your `ios/Podfile`:
+```ruby
+pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+```
+
+2. Add fonts to your `Info.plist`:
+```xml
+<key>UIAppFonts</key>
+<array>
+  <string>MaterialIcons.ttf</string>
+  <string>FontAwesome.ttf</string>
+  <!-- Add more font files as needed -->
+</array>
+```
+
+### Android Setup
+The necessary setup is already done in:
+- `android/app/build.gradle` - Font assets configuration
+- `android/app/src/main/assets/fonts/` - Font files location
+
+To use custom icons, place your `.ttf` files in the fonts directory.
 
 ## 🪝 Custom Hooks
 
