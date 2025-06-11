@@ -312,8 +312,6 @@ API_KEY=your_api_key
 Note: Never commit your actual `.env` files to version control. Use `.env.example` as a template.
 
 ---
-Made with ❤️ by [Vikram Pratap Singh Raghav](https://github.com/vikrampratapsinghraghav)
-
 This starter template is maintained by [Vikram Pratap Singh Raghav](https://github.com/vikrampratapsinghraghav).
 
 ## 💅 Code Quality Tools
@@ -481,4 +479,4 @@ try {
 ```
 
 ---
-This starter template is maintained by [Your Name/Organization].
+This starter template is maintained by [Vikram Pratap Singh Raghav](https://github.com/vikrampratapsinghraghav).
